@@ -1,0 +1,190 @@
+package fxsnaken;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
+public class FxSnaken extends Application {
+
+    int aaaa = 0;
+
+    int s2x = 5;
+    int s2y = 5;
+
+    int s2xd = 2;
+    int s2yd = 0;
+
+    int s1x = 5;
+    int s1y = 763;
+
+    int s1xd = 2;
+    int s1yd = 0;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        stage.setTitle("snake");
+        StackPane center = new StackPane();
+        center.setStyle("-fx-background-color: #111111");
+
+        BorderPane mainPane = new BorderPane();
+        StackPane left = new StackPane();
+        left.setStyle("-fx-background-color: #303030");
+        left.setPrefWidth(200);
+        mainPane.setLeft(left);
+        mainPane.setCenter(center);
+
+        Scene scena = new Scene(mainPane, 1284, 818, Color.rgb(0, 191, 255));
+//        Canvas canvas = new Canvas(1024, 768);
+
+//        center.getChildren().add(canvas);
+        stage.setScene(scena);
+
+        stage.show();
+
+//        GraphicsContext gc = canvas.getGraphicsContext2D();
+//        gc.setFill(Color.GREEN);
+//        gc.setStroke(Color.GREEN);
+//        gc.setLineWidth(2);
+//        gc.fillRect(-10000, -10000, 20000, 20000);
+//        gc.drawImage(new Image(new File("c:\\Users\\andre\\Pictures\\picard-facepalm.jpg ").toURI().toString()), 10, 10); 
+        BufferedImage bi = new BufferedImage(1024, 762, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = bi.createGraphics();
+
+        ImageView iv = new ImageView();
+        center.getChildren().add(iv);
+
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+//                check();
+//                gc.setFill(Color.RED);
+//                gc.setStroke(Color.RED);
+//                gc.fillRect(s1x, s1y, 20, 20);
+
+                s1x = s1x + s1xd;
+                s1y = s1y + s1yd;
+                if (s1x > 1024) {
+                    s1x = 0;
+                }
+                if (s1x < 0) {
+                    s1x = 1024;
+                }
+                if (s1y > 768) {
+                    s1y = 0;
+                }
+                if (s1y < 0) {
+                    s1y = 768;
+                }
+                if (s2x > 1024) {
+                    s2x = 0;
+                }
+                if (s2x < 0) {
+                    s2x = 1024;
+                }
+                if (s2y > 768) {
+                    s2y = 0;
+                }
+                if (s2y < 0) {
+                    s2y = 768;
+                }
+
+//                gc.setFill(Color.YELLOW);
+//                gc.setStroke(Color.YELLOW);
+//                gc.fillRect(s2x, s2y, 2, 2);
+                s2x = s2x + s2xd;
+                s2y = s2y + s2yd;
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        g.setPaint(java.awt.Color.white);
+                        g.setColor(java.awt.Color.red);
+                        g.fillRect(10 + aaaa, 10 + aaaa, 120, 120);
+                        aaaa++;
+                        g.drawString("Number of triangles: ", 15, 15);
+                        WritableImage image = SwingFXUtils.toFXImage(bi, null);
+                        g.dispose();
+                        iv.setImage(image);
+                    }
+                });
+
+            }
+
+//            private void check() {
+//                Platform.runLater(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        double pixelScale = 1;
+//                        WritableImage writableImage = new WritableImage((int) Math.rint(pixelScale * canvas.getWidth()), (int) Math.rint(pixelScale * canvas.getHeight()));
+//                        SnapshotParameters spa = new SnapshotParameters();
+//                        spa.setTransform(Transform.scale(pixelScale, pixelScale));
+//                        WritableImage wi = canvas.snapshot(spa, writableImage);
+//                        System.out.println(wi.getPixelReader().getArgb(8, 8));
+//                    }
+//                });
+//
+//            }
+        }, 100, 10);
+
+        scena.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent key) {
+                if (key.getCode() == KeyCode.DOWN) {
+                    s1yd = 2;
+                    s1xd = 0;
+                }
+                if (key.getCode() == KeyCode.RIGHT) {
+                    s1yd = 0;
+                    s1xd = 2;
+                }
+                if (key.getCode() == KeyCode.LEFT) {
+                    s1yd = 0;
+                    s1xd = -2;
+                }
+                if (key.getCode() == KeyCode.UP) {
+                    s1yd = -2;
+                    s1xd = 0;
+                }
+
+                if (key.getCode() == KeyCode.S) {
+                    s2yd = 2;
+                    s2xd = 0;
+                }
+                if (key.getCode() == KeyCode.D) {
+                    s2yd = 0;
+                    s2xd = 2;
+                }
+                if (key.getCode() == KeyCode.A) {
+                    s2yd = 0;
+                    s2xd = -2;
+                }
+                if (key.getCode() == KeyCode.W) {
+                    s2yd = -2;
+                    s2xd = 0;
+                }
+            }
+        });
+
+    }
+
+}

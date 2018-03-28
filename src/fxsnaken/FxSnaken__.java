@@ -5,28 +5,20 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class FxSnaken extends Application {
+public class FxSnaken__ extends Application {
 
     int s2x;
     int s2y;
@@ -40,100 +32,43 @@ public class FxSnaken extends Application {
     int s1xd;
     int s1yd;
     int[][] matrix;
-    int py = 0;
-    int pr = 0;
-
-    Timeline timeLine = new Timeline();
-
-    Text pointsShow;
+    
     GraphicsContext gc;
-    VBox lostmenu = new VBox();
 
-    public static void main(String[] args) {
+    public static void main_(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-
-        VBox left = new VBox();
-        HBox bottom = new HBox();
+        stage.setTitle("snake");
+        stage.setMaximized(true);
         StackPane center = new StackPane();
-        StackPane right = new StackPane();
-        StackPane up = new StackPane();
-        BorderPane borderPane = new BorderPane();
-        Scene scena = new Scene(borderPane);
-        stage.setTitle("Snaken");
-        bottom.setPrefHeight(5);
-        up.setPrefHeight(17);
-        left.setPrefWidth(300);
+        center.setStyle("-fx-background-color: #111111");
 
-        center.setPrefWidth(900);
-        center.setPrefHeight(900);
-        borderPane.setLeft(left);
-        borderPane.setRight(right);
-        borderPane.setCenter(center);
-        borderPane.setBottom(bottom);
-        borderPane.setTop(up);
+        BorderPane mainPane = new BorderPane();
+        StackPane left = new StackPane();
+        left.setStyle("-fx-background-color: #303030");
+        left.setPrefWidth(200);
+        mainPane.setLeft(left);
+        mainPane.setCenter(center);
+
+        Scene scena = new Scene(mainPane, 1284, 818, Color.rgb(0, 191, 255));
+        Canvas canvas = new Canvas(1024, 768);
+
+        center.getChildren().add(canvas);
         stage.setScene(scena);
 
-        left.setStyle("-fx-background-color: #202020;");
-        center.setStyle("-fx-background-color: #000000;");
-        right.setStyle("-fx-background-color: #000000;");
-        bottom.setStyle("-fx-background-color: #000000;");
-        up.setStyle("-fx-background-color: #000000;");
-        Text copyrightText = new Text("©Andrei Vasilache");
-        copyrightText.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
-        copyrightText.setFill(Color.WHITE);
-
-        bottom.getChildren().add(copyrightText);
-        bottom.setAlignment(Pos.CENTER_RIGHT);
-        bottom.setMargin(copyrightText, new Insets(0, 20, 0, 0));
-        stage.setMaximized(true);
-
-        pointsShow = new Text();
-        pointsShow.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
-        pointsShow.setFill(Color.WHITE);
-        showScore();
-        left.getChildren().add(pointsShow);
-        left.setAlignment(Pos.TOP_CENTER);
-        left.setMargin(pointsShow, new Insets(20, 0, 0, 0));
-
-        Image image = new Image(getClass().getResourceAsStream("/23408.png"));
-        Button buttonS = new Button("", new ImageView(image));
-        right.getChildren().add(buttonS);
-        right.setAlignment(Pos.TOP_RIGHT);
-        right.setMargin(buttonS, new Insets(5, 5, 0, 0));
-
         stage.show();
-        Canvas canvas = new Canvas(1024, 768);
-        center.getChildren().add(canvas);
+
         gc = canvas.getGraphicsContext2D();
 
-        center.getChildren().add(lostmenu);
-        lostmenu.setAlignment(Pos.CENTER);
-        lostmenu.setVisible(false);
-
-        Text lostText = new Text("you lost");
-        lostText.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
-        lostText.setFill(Color.YELLOW);
-        lostmenu.getChildren().add(lostText);
-
-        Button buttonSave = new Button("next round");
-        buttonSave.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                clearScreen();
-                resetVariables();
-                center.getChildren().remove(buttonSave);
-                timeLine.play();
-                 lostmenu.setVisible(false);
-            }
-        });
-        lostmenu.getChildren().add(buttonSave);
+        gc.setFont(new Font("Verdana", 20));
 
         clearScreen();
         resetVariables();
+
+        Timeline timeLine = new Timeline();
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), new EventHandler<ActionEvent>() {
             @Override
@@ -142,13 +77,20 @@ public class FxSnaken extends Application {
                 gc.setStroke(Color.RED);
 
                 if (matrix[s1x][s1y] != 0) {
-                    lostText.setFill(Color.RED);
-lostText.setText("red lost");
-                    py++;
-                    showScore();
+                    gc.fillText("RED LOST", 450, 200);
                     timeLine.pause();
-                    lostmenu.setVisible(true);
-                    buttonSave.requestFocus();
+                    Button buttonSave = new Button("next round");
+                    center.getChildren().add(buttonSave);
+                    buttonSave.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent e) {
+                            clearScreen();
+                            resetVariables();
+                            center.getChildren().remove(buttonSave);
+                            timeLine.play();
+                            
+                        }
+                    });
                 }
                 matrix[s1x][s1y] = 1;
                 gc.fillRect(s1x * 2, s1y * 2, 2, 2);
@@ -158,13 +100,20 @@ lostText.setText("red lost");
                 gc.setFill(Color.YELLOW);
                 gc.setStroke(Color.YELLOW);
                 if (matrix[s2x][s2y] != 0) {
-                     lostText.setFill(Color.YELLOW);
-    lostText.setText("yellow lost");
-                    pr++;
-                    showScore();
+                    gc.fillText("YELLOW LOST", 450, 200);
                     timeLine.pause();
-                    lostmenu.setVisible(true);
-                    buttonSave.requestFocus();
+                    Button buttonSave = new Button("next round");
+                    center.getChildren().add(buttonSave);
+                    buttonSave.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent e) {
+                            clearScreen();
+                            resetVariables();
+                            center.getChildren().remove(buttonSave);
+                            timeLine.play();
+                            
+                        }
+                    });
                 }
 
                 matrix[s2x][s2y] = 2;
@@ -270,25 +219,19 @@ lostText.setText("red lost");
         gc.setLineWidth(2);
         gc.fillRect(-10000, -10000, 20000, 20000);
     }
+    private void resetVariables(){
+    s2x = 2;
+    s2y = 2;
 
-    private void resetVariables() {
-        s2x = 2;
-        s2y = 2;
+    s2xd = 1;
+    s2yd = 0;
 
-        s2xd = 1;
-        s2yd = 0;
+    s1x = 2;
+    s1y = 763 / 2;
 
-        s1x = 2;
-        s1y = 763 / 2;
-
-        s1xd = 1;
-        s1yd = 0;
-        matrix = new int[513][385];
-    }
-
-    private void showScore() {
-        pointsShow.setText("red " + pr + " -score- " + py + " yellow");
-
+    s1xd = 1;
+    s1yd = 0;
+    matrix = new int[513][385];
     }
 
 }
