@@ -11,15 +11,24 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -28,6 +37,13 @@ import javafx.util.Duration;
 
 public class FxSnaken extends Application {
 
+    Button buttonM1;
+    Button buttonM2;
+    Button buttonM3;
+    Button buttonMG1;
+    Hyperlink P10;
+    Hyperlink P20;
+    Hyperlink P30;
     int s2x;
     int s2y;
 
@@ -53,8 +69,114 @@ public class FxSnaken extends Application {
         launch(args);
     }
 
+    public void mainMenu(Stage stage) {
+        VBox vBox = new VBox();
+        Scene scena = new Scene(vBox);
+        BackgroundFill fill = new BackgroundFill(Color.web("#000000"), CornerRadii.EMPTY, Insets.EMPTY);
+        BackgroundImage im = new BackgroundImage(new Image(FxSnaken.class.getResourceAsStream("/gold-bg.png")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        vBox.setBackground(new Background(new BackgroundFill[]{fill}, new BackgroundImage[]{im}));
+        stage.setTitle("Snaken");
+        
+        vBox.setAlignment(Pos.TOP_LEFT);
+        
+        StackPane title =new StackPane();
+        title.setAlignment(Pos.CENTER_LEFT);
+        Text text =new Text("S N A K E N");
+        text.setFill(Color.WHITE);
+        text.setFont(Font.font("Times New Roman",FontWeight.SEMI_BOLD,50));
+        title.getChildren().add(text);
+        title.setMargin(text, new Insets(0, 0, 0, 10));
+        vBox.getChildren().add(title);
+     vBox.setMargin(title, new Insets(200, 0, 0, 50));
+        Rectangle rectangle =new Rectangle(285, 60);
+        rectangle.setStroke(Color.WHITE);
+        rectangle.setStrokeWidth(2);
+        rectangle.setFill(null);
+       title.getChildren().add(rectangle);
+       
+        
+//        buttonM1 = new Button("NEW GAME");
+//        buttonM1.setMinWidth(300);
+//        vBox.getChildren().add(buttonM1);
+//        vBox.setMargin(buttonM1, new Insets(400, 0, 0, 0));
+//        buttonM2 = new Button("OPTIONS");
+//        buttonM2.setMinWidth(300);
+//        vBox.getChildren().add(buttonM2);
+//        stage.setScene(scena);
+//        vBox.setMargin(buttonM2, new Insets(10, 0, 0, 0));
+//        buttonM3 = new Button("QUIT");
+//        buttonM3.setMinWidth(300);
+//        vBox.getChildren().add(buttonM3);
+//        stage.setScene(scena);
+//        vBox.setMargin(buttonM3, new Insets(10, 0, 0, 0));
+
+//        buttonM3.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent e) {
+//                stage.close();
+//            }
+//        });
+//        buttonM1.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent e) {
+//                gameMake(scena);
+//            }
+//        });
+
+
+ stage.setScene(scena);
+        stage.setMaximized(true);
+        stage.show();
+
+    }
+
+    public void gameMake(Scene scene) {
+        VBox vBox = new VBox();
+        HBox hBox = new HBox();
+
+        scene.setRoot(vBox);
+        vBox.setAlignment(Pos.CENTER_LEFT);
+
+        //text
+        Text gameText = new Text("MATCH DURATION:");
+        gameText.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
+        gameText.setFill(Color.BLACK);
+
+        //btn
+        buttonMG1 = new Button("START");
+
+        //link
+        P10 = new Hyperlink("10");
+        P20 = new Hyperlink("/20");
+        P30 = new Hyperlink("/30");
+        vBox.setMargin(gameText, new Insets(0, 0, 0, 20));
+        vBox.setMargin(buttonMG1, new Insets(20, 0, 0, 20));
+        vBox.setMargin(P10, new Insets(20, 0, 0, 20));
+        vBox.setMargin(P20, new Insets(20, 0, 0, 20));
+        vBox.setMargin(P30, new Insets(20, 0, 0, 20));
+        hBox.getChildren().add(gameText);
+        hBox.getChildren().add(P10);
+        hBox.getChildren().add(P20);
+        hBox.getChildren().add(P30);
+        vBox.getChildren().add(hBox);
+
+        vBox.getChildren().add(buttonMG1);
+
+        buttonMG1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                game(scene);
+            }
+        });
+
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
+        mainMenu(stage);
+    }
+
+    public void game(Scene scene) {
 
         VBox left = new VBox();
         HBox bottom = new HBox();
@@ -62,8 +184,8 @@ public class FxSnaken extends Application {
         StackPane right = new StackPane();
         StackPane up = new StackPane();
         BorderPane borderPane = new BorderPane();
-        Scene scena = new Scene(borderPane);
-        stage.setTitle("Snaken");
+        scene.setRoot(borderPane);
+
         bottom.setPrefHeight(5);
         up.setPrefHeight(17);
         left.setPrefWidth(300);
@@ -75,7 +197,6 @@ public class FxSnaken extends Application {
         borderPane.setCenter(center);
         borderPane.setBottom(bottom);
         borderPane.setTop(up);
-        stage.setScene(scena);
 
         left.setStyle("-fx-background-color: #202020;");
         center.setStyle("-fx-background-color: #000000;");
@@ -89,7 +210,6 @@ public class FxSnaken extends Application {
         bottom.getChildren().add(copyrightText);
         bottom.setAlignment(Pos.CENTER_RIGHT);
         bottom.setMargin(copyrightText, new Insets(0, 20, 0, 0));
-        stage.setMaximized(true);
 
         pointsShow = new Text();
         pointsShow.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
@@ -105,7 +225,6 @@ public class FxSnaken extends Application {
         right.setAlignment(Pos.TOP_RIGHT);
         right.setMargin(buttonS, new Insets(5, 5, 0, 0));
 
-        stage.show();
         Canvas canvas = new Canvas(1024, 768);
         center.getChildren().add(canvas);
         gc = canvas.getGraphicsContext2D();
@@ -127,7 +246,7 @@ public class FxSnaken extends Application {
                 resetVariables();
                 center.getChildren().remove(buttonSave);
                 timeLine.play();
-                 lostmenu.setVisible(false);
+                lostmenu.setVisible(false);
             }
         });
         lostmenu.getChildren().add(buttonSave);
@@ -135,7 +254,7 @@ public class FxSnaken extends Application {
         clearScreen();
         resetVariables();
 
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), new EventHandler<ActionEvent>() {
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.013), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 gc.setFill(Color.RED);
@@ -143,7 +262,7 @@ public class FxSnaken extends Application {
 
                 if (matrix[s1x][s1y] != 0) {
                     lostText.setFill(Color.RED);
-lostText.setText("red lost");
+                    lostText.setText("red lost");
                     py++;
                     showScore();
                     timeLine.pause();
@@ -158,8 +277,8 @@ lostText.setText("red lost");
                 gc.setFill(Color.YELLOW);
                 gc.setStroke(Color.YELLOW);
                 if (matrix[s2x][s2y] != 0) {
-                     lostText.setFill(Color.YELLOW);
-    lostText.setText("yellow lost");
+                    lostText.setFill(Color.YELLOW);
+                    lostText.setText("yellow lost");
                     pr++;
                     showScore();
                     timeLine.pause();
@@ -202,7 +321,7 @@ lostText.setText("red lost");
         timeLine.getKeyFrames().add(keyFrame);
         timeLine.setCycleCount(Timeline.INDEFINITE);
         timeLine.play();
-        scena.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent key) {
                 if (key.getCode() == KeyCode.DOWN) {
