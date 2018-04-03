@@ -1,7 +1,6 @@
 package fxsnaken;
 
 import java.io.File;
-import java.net.URL;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -9,11 +8,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.effect.Bloom;
+import javafx.scene.effect.MotionBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -27,9 +29,9 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -45,7 +47,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class FxSnaken extends Application {
-Stage stage;
+
+    Stage stage;
     Hyperlink P10;
     Hyperlink P20;
     Hyperlink P30;
@@ -64,7 +67,6 @@ Stage stage;
     int py = 0;
     int pr = 0;
 
-   
     Timeline timeLine = new Timeline();
 
     Text pointsShow;
@@ -78,10 +80,10 @@ Stage stage;
     public void mainMenu(Scene scena) {
         VBox vBox = new VBox();
         scena.setRoot(vBox);
+
         BackgroundFill fill = new BackgroundFill(Color.web("#000000"), CornerRadii.EMPTY, Insets.EMPTY);
         BackgroundImage im = new BackgroundImage(new Image(FxSnaken.class.getResourceAsStream("/gold-bg.png")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         vBox.setBackground(new Background(new BackgroundFill[]{fill}, new BackgroundImage[]{im}));
-        
 
         vBox.setAlignment(Pos.TOP_LEFT);
 
@@ -102,15 +104,29 @@ Stage stage;
         addMenuItem(vBox, "NEW GAME", () -> gameMake(scena), Color.DARKGRAY);
         addMenuItem(vBox, "OPTIONS", () -> options(scena), Color.DARKGRAY);
         addMenuItem(vBox, "QUIT", () -> stage.close(), Color.DARKGRAY);
-         String musicFile = this.getClass().getResource("/x.MP3").toString();
-        Media sound = new Media(musicFile);
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.setVolume(98);
-        mediaPlayer.play();
-         
-           
-  
 
+        Timeline timeln = new Timeline(
+                new KeyFrame(Duration.seconds(0.1), new EventHandler<ActionEvent>() {
+                    int pos = 0;
+
+                    public void handle(ActionEvent event) {
+                        pos++;
+                        BackgroundPosition bgpos = new BackgroundPosition(Side.LEFT, pos, false, Side.TOP, 0, false);
+                        BackgroundFill fill = new BackgroundFill(Color.web("#000000"), CornerRadii.EMPTY, Insets.EMPTY);
+                        BackgroundImage im = new BackgroundImage(new Image(FxSnaken.class.getResourceAsStream("/gold-bg.png")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, bgpos, BackgroundSize.DEFAULT);
+                        vBox.setBackground(new Background(new BackgroundFill[]{fill}, new BackgroundImage[]{im}));
+
+                    }
+                }));
+        timeln.setCycleCount(Timeline.INDEFINITE);
+        timeln.play();
+
+//         String musicFile = this.getClass().getResource("/x.MP3").toString();
+//        Media sound = new Media(musicFile);
+//        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+//        mediaPlayer.setVolume(98);
+//        mediaPlayer.play();
+//        System.out.println(mediaPlayer.getError());
     }
 
     public void gameMake(Scene scene) {
@@ -122,7 +138,7 @@ Stage stage;
         BackgroundFill fill = new BackgroundFill(Color.web("#000000"), CornerRadii.EMPTY, Insets.EMPTY);
         BackgroundImage im = new BackgroundImage(new Image(FxSnaken.class.getResourceAsStream("/gold-bg.png")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         vBox.setBackground(new Background(new BackgroundFill[]{fill}, new BackgroundImage[]{im}));
-   
+
         Text gameText = new Text("MATCH DURATION:");
         gameText.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
         gameText.setFont(Font.font("Times New Roman", FontWeight.SEMI_BOLD, 30));
@@ -131,8 +147,8 @@ Stage stage;
         P10 = new Hyperlink("10");
         P20 = new Hyperlink("/20");
         P30 = new Hyperlink("/30");
-     
-        vBox.setMargin(gameText, new Insets(0, 0, 0, 20));    
+
+        vBox.setMargin(gameText, new Insets(0, 0, 0, 20));
         vBox.setMargin(P10, new Insets(20, 0, 0, 20));
         vBox.setMargin(P20, new Insets(20, 0, 0, 20));
         vBox.setMargin(P30, new Insets(20, 0, 0, 20));
@@ -145,48 +161,43 @@ Stage stage;
         hBox.getChildren().add(P20);
         hBox.getChildren().add(P30);
         vBox.getChildren().add(hBox);
-        vBox.setMargin(hBox, new Insets(400, 0, 0, 0));  
+        vBox.setMargin(hBox, new Insets(400, 0, 0, 0));
         addMenuItem(vBox, "START", () -> game(scene), Color.DARKGRAY);
-        
-        
-        HBox hBoxQ =new HBox();
-        VBox vBoxQ =new VBox();
+
+        HBox hBoxQ = new HBox();
+        VBox vBoxQ = new VBox();
         vBoxQ.setAlignment(Pos.BOTTOM_RIGHT);
         hBoxQ.setAlignment(Pos.BOTTOM_RIGHT);
-        
-        
+
         hBoxQ.prefHeightProperty().bind(vBox.widthProperty());
-        
-        
+
         hBoxQ.getChildren().add(vBoxQ);
         vBox.getChildren().add(hBoxQ);
         addMenuItem(vBoxQ, "BACK", () -> mainMenu(scene), Color.DARKGRAY);
-        
 
     }
 
     @Override
     public void start(Stage stage1) throws Exception {
-        stage =stage1;
-         VBox vBox = new VBox();
+        stage = stage1;
+        VBox vBox = new VBox();
         Scene scena = new Scene(vBox);
-                stage.setTitle("Snaken");
-                stage.setScene(scena);
+        stage.setTitle("Snaken");
+        stage.setScene(scena);
         stage.setMaximized(true);
         stage.show();
         mainMenu(scena);
-        //String musicFile = "ceva.MP3";
+//        String musicFile = "ceva.MP3";
 //         Media sound = new Media(new File(musicFile).toURI().toString());
-//MediaPlayer mediaPlayer = new MediaPlayer(sound);
+//        MediaPlayer mediaPlayer = new MediaPlayer(sound);
 //mediaPlayer.setVolume(99);
 //mediaPlayer.play();
-        
-           
+//        
 
     }
 
     public void game(Scene scene) {
-        
+
         VBox left = new VBox();
         HBox bottom = new HBox();
         StackPane center = new StackPane();
@@ -212,8 +223,7 @@ Stage stage;
         BackgroundImage im = new BackgroundImage(new Image(FxSnaken.class.getResourceAsStream("/gold-bg.png")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         center.setBackground(new Background(new BackgroundFill[]{fill}, new BackgroundImage[]{im}));
         right.setBackground(new Background(new BackgroundFill[]{fill}, new BackgroundImage[]{im}));
-        
-        
+
         bottom.setStyle("-fx-background-color: #000000;");
         up.setStyle("-fx-background-color: #000000;");
         Text copyrightText = new Text("©Andrei Vasilache");
@@ -423,7 +433,7 @@ Stage stage;
 
     }
 
-    private void addMenuItem(VBox vBox, String text, Runnable runable,Color colorel) {
+    private void addMenuItem(VBox vBox, String text, Runnable runable, Color colorel) {
         Line line = new Line();
         line.setEndX(250);
         line.setStroke(Color.DARKGRAY);
@@ -442,7 +452,7 @@ Stage stage;
 
         });
         menu1Bg.setFill(gradient);
-        
+
         Text textMen1 = new Text(text);
         textMen1.setFill(colorel);
         textMen1.setFont(Font.font("Times New Roman", FontWeight.SEMI_BOLD, 20));
@@ -478,20 +488,18 @@ Stage stage;
     private void options(Scene scena) {
         VBox vBox = new VBox();
         scena.setRoot(vBox);
-        Text text =new Text("SOUND");
+        Text text = new Text("SOUND");
         vBox.getChildren().add(text);
         BackgroundFill fill = new BackgroundFill(Color.web("#000000"), CornerRadii.EMPTY, Insets.EMPTY);
         BackgroundImage im = new BackgroundImage(new Image(FxSnaken.class.getResourceAsStream("/gold-bg.png")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         vBox.setBackground(new Background(new BackgroundFill[]{fill}, new BackgroundImage[]{im}));
-        HBox hBoxQ =new HBox();
-        VBox vBoxQ =new VBox();
+        HBox hBoxQ = new HBox();
+        VBox vBoxQ = new VBox();
         vBoxQ.setAlignment(Pos.BOTTOM_RIGHT);
         hBoxQ.setAlignment(Pos.BOTTOM_RIGHT);
-        
-        
+
         hBoxQ.prefHeightProperty().bind(vBox.widthProperty());
-        
-        
+
         hBoxQ.getChildren().add(vBoxQ);
         vBox.getChildren().add(hBoxQ);
         addMenuItem(vBoxQ, "BACK", () -> mainMenu(scena), Color.DARKGRAY);
