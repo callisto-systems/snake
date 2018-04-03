@@ -14,8 +14,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.MotionBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -29,11 +27,8 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -45,6 +40,11 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 
 public class FxSnaken extends Application {
 
@@ -110,7 +110,7 @@ public class FxSnaken extends Application {
                     int pos = 0;
 
                     public void handle(ActionEvent event) {
-                        pos++;
+                        pos = pos + 1;
                         BackgroundPosition bgpos = new BackgroundPosition(Side.LEFT, pos, false, Side.TOP, 0, false);
                         BackgroundFill fill = new BackgroundFill(Color.web("#000000"), CornerRadii.EMPTY, Insets.EMPTY);
                         BackgroundImage im = new BackgroundImage(new Image(FxSnaken.class.getResourceAsStream("/gold-bg.png")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, bgpos, BackgroundSize.DEFAULT);
@@ -121,12 +121,18 @@ public class FxSnaken extends Application {
         timeln.setCycleCount(Timeline.INDEFINITE);
         timeln.play();
 
-//         String musicFile = this.getClass().getResource("/x.MP3").toString();
-//        Media sound = new Media(musicFile);
-//        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-//        mediaPlayer.setVolume(98);
-//        mediaPlayer.play();
-//        System.out.println(mediaPlayer.getError());
+        try {
+            AudioInputStream stream = AudioSystem.getAudioInputStream(FxSnaken.class.getResourceAsStream("/x.mp3"));
+            AudioFormat format = stream.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+            Clip clip = (Clip) AudioSystem.getLine(info);
+            clip.open(stream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+            clip.start();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void gameMake(Scene scene) {
