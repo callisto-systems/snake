@@ -4,6 +4,8 @@ import java.io.File;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,6 +16,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -45,6 +48,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 
 public class FxSnaken extends Application {
 
@@ -66,6 +70,7 @@ public class FxSnaken extends Application {
     int[][] matrix;
     int py = 0;
     int pr = 0;
+    FloatControl gainControl;
 
     Timeline timeLine = new Timeline();
 
@@ -120,18 +125,6 @@ public class FxSnaken extends Application {
                 }));
         timeln.setCycleCount(Timeline.INDEFINITE);
         timeln.play();
-
-        try {
-            AudioInputStream stream = AudioSystem.getAudioInputStream(FxSnaken.class.getResourceAsStream("/x.mp3"));
-            AudioFormat format = stream.getFormat();
-            DataLine.Info info = new DataLine.Info(Clip.class, format);
-            Clip clip = (Clip) AudioSystem.getLine(info);
-            clip.open(stream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-            clip.start();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
 
     }
 
@@ -192,14 +185,25 @@ public class FxSnaken extends Application {
         stage.setScene(scena);
         stage.setMaximized(true);
         stage.show();
-        mainMenu(scena);
-//        String musicFile = "ceva.MP3";
-//         Media sound = new Media(new File(musicFile).toURI().toString());
-//        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-//mediaPlayer.setVolume(99);
-//mediaPlayer.play();
-//        
+      
+        try {
+            AudioInputStream stream = AudioSystem.getAudioInputStream(FxSnaken.class.getResourceAsStream("/x.mp3"));
+            AudioFormat format = stream.getFormat();
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+            Clip clip = (Clip) AudioSystem.getLine(info);
+            clip.open(stream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
 
+            gainControl = (FloatControl) clip
+                    .getControl(FloatControl.Type.MASTER_GAIN);
+            double gain = 0.5D; // number between 0 and 1 (loudest)
+            float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+            gainControl.setValue(dB);
+            clip.start();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+          mainMenu(scena);
     }
 
     public void game(Scene scene) {
@@ -494,18 +498,38 @@ public class FxSnaken extends Application {
     private void options(Scene scena) {
         VBox vBox = new VBox();
         scena.setRoot(vBox);
-        Text text = new Text("SOUND");
-        vBox.getChildren().add(text);
+        HBox volumebox = new HBox();
+
+        Text optionsMT = new Text("MUSIC:");
+        optionsMT.setFont(Font.font("Times New Roman", FontWeight.SEMI_BOLD, 20));
+        optionsMT.setFill(Color.WHITE);
+        final Slider slider = new Slider(0, 100, 50);
+
+        slider.setPrefWidth(200);
+        vBox.setAlignment(Pos.BOTTOM_LEFT);
+        vBox.getChildren().add(volumebox);
+        slider.valueProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                float dB = (float) (Math.log(slider.getValue() / 100) / Math.log(10.0) * 20.0);
+                gainControl.setValue(dB);
+            }
+        });
+
+        volumebox.getChildren().add(optionsMT);
+        volumebox.getChildren().add(slider);
+        volumebox.getStylesheets().add(getClass().getResource("/slider.css").toExternalForm());
+        vBox.setMargin(optionsMT, new Insets(200, 0, 0, 50));
+
         BackgroundFill fill = new BackgroundFill(Color.web("#000000"), CornerRadii.EMPTY, Insets.EMPTY);
         BackgroundImage im = new BackgroundImage(new Image(FxSnaken.class.getResourceAsStream("/gold-bg.png")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         vBox.setBackground(new Background(new BackgroundFill[]{fill}, new BackgroundImage[]{im}));
+
         HBox hBoxQ = new HBox();
         VBox vBoxQ = new VBox();
         vBoxQ.setAlignment(Pos.BOTTOM_RIGHT);
         hBoxQ.setAlignment(Pos.BOTTOM_RIGHT);
-
         hBoxQ.prefHeightProperty().bind(vBox.widthProperty());
-
         hBoxQ.getChildren().add(vBoxQ);
         vBox.getChildren().add(hBoxQ);
         addMenuItem(vBoxQ, "BACK", () -> mainMenu(scena), Color.DARKGRAY);

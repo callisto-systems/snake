@@ -1,0 +1,11 @@
+.slider .thumb {
+    -fx-background-image: url("arrow-left-right.png");
+    -fx-padding:16;
+    -fx-background-color:transparent;
+}
+.slider .track{
+-fx-control-inner-background:palegreen;
+-fx-background-color:palegreen;
+    
+    
+}
