@@ -1,6 +1,5 @@
 package fxsnaken;
 
-import java.io.File;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -43,6 +42,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -53,9 +53,8 @@ import javax.sound.sampled.FloatControl;
 public class FxSnaken extends Application {
 
     Stage stage;
-    Hyperlink P10;
-    Hyperlink P20;
-    Hyperlink P30;
+    int maxRounds = 10;
+
     int s2x;
     int s2y;
 
@@ -70,6 +69,8 @@ public class FxSnaken extends Application {
     int[][] matrix;
     int py = 0;
     int pr = 0;
+    int s1speed = 1;
+    int s2speed = 1;
     FloatControl gainControl;
 
     Timeline timeLine = new Timeline();
@@ -143,22 +144,58 @@ public class FxSnaken extends Application {
         gameText.setFont(Font.font("Times New Roman", FontWeight.SEMI_BOLD, 30));
         gameText.setFill(Color.WHITE);
 
-        P10 = new Hyperlink("10");
-        P20 = new Hyperlink("/20");
-        P30 = new Hyperlink("/30");
+        Slider durationSlider = new Slider(0, 2, 0);
+        durationSlider.setMin(0);
+        durationSlider.setMax(2);
+        durationSlider.setValue(1);
+        durationSlider.setMinorTickCount(0);
+        durationSlider.setMajorTickUnit(1);
+        durationSlider.setSnapToTicks(true);
+        durationSlider.setShowTickMarks(true);
+        durationSlider.setShowTickLabels(true);
+        durationSlider.setPrefWidth(200);
+
+        durationSlider.setLabelFormatter(new StringConverter<Double>() {
+            @Override
+            public String toString(Double n) {
+                if (n < 0.5) {
+                    return "10";
+                }
+                if (n < 1.5) {
+                    return "20";
+                }
+                return "30";
+            }
+
+            @Override
+            public Double fromString(String s) {
+                switch (s) {
+                    case "10":
+                        return 0d;
+                    case "20":
+                        return 1d;
+                    case "30":
+                        return 2d;
+                    default:
+                        return 0d;
+                }
+            }
+        });
+        durationSlider.valueProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                maxRounds = (int) durationSlider.getValue();
+                System.out.println(maxRounds);
+            }
+        });
 
         vBox.setMargin(gameText, new Insets(0, 0, 0, 20));
-        vBox.setMargin(P10, new Insets(20, 0, 0, 20));
-        vBox.setMargin(P20, new Insets(20, 0, 0, 20));
-        vBox.setMargin(P30, new Insets(20, 0, 0, 20));
-        P10.setFont(Font.font(20));
-        P20.setFont(Font.font(20));
-        P30.setFont(Font.font(20));
+        vBox.setMargin(durationSlider, new Insets(20, 0, 0, 20));
 
         hBox.getChildren().add(gameText);
-        hBox.getChildren().add(P10);
-        hBox.getChildren().add(P20);
-        hBox.getChildren().add(P30);
+        hBox.getChildren().add(durationSlider);
+        hBox.getStylesheets().add(getClass().getResource("/slider.css").toExternalForm());
+
         vBox.getChildren().add(hBox);
         vBox.setMargin(hBox, new Insets(400, 0, 0, 0));
         addMenuItem(vBox, "START", () -> game(scene), Color.DARKGRAY);
@@ -185,7 +222,7 @@ public class FxSnaken extends Application {
         stage.setScene(scena);
         stage.setMaximized(true);
         stage.show();
-      
+
         try {
             AudioInputStream stream = AudioSystem.getAudioInputStream(FxSnaken.class.getResourceAsStream("/x.mp3"));
             AudioFormat format = stream.getFormat();
@@ -203,7 +240,7 @@ public class FxSnaken extends Application {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-          mainMenu(scena);
+        mainMenu(scena);
     }
 
     public void game(Scene scene) {
@@ -275,8 +312,8 @@ public class FxSnaken extends Application {
         buttonSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                clearScreen();
                 resetVariables();
+                clearScreen();
                 center.getChildren().remove(buttonSave);
                 timeLine.play();
                 lostmenu.setVisible(false);
@@ -284,10 +321,10 @@ public class FxSnaken extends Application {
         });
         lostmenu.getChildren().add(buttonSave);
 
-        clearScreen();
         resetVariables();
+        clearScreen();
 
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.013), new EventHandler<ActionEvent>() {
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.023), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 gc.setFill(Color.RED);
@@ -303,7 +340,15 @@ public class FxSnaken extends Application {
                     buttonSave.requestFocus();
                 }
                 matrix[s1x][s1y] = 1;
-                gc.fillRect(s1x * 2, s1y * 2, 2, 2);
+                gc.fillRect(s1x * 5, s1y * 5, 5, 5);
+                gc.setFill(Color.web("#FF4747"));
+                gc.fillRect(s1x * 5 + 2, s1y * 5 + 2, 1, 1);
+                if (s1yd == 0) {
+                    gc.fillRect(s1x * 5 + 1, s1y * 5 + 3, 3, 2);
+                } else {
+                    gc.fillRect(s1x * 5 + 3, s1y * 5 + 1, 2, 3);
+                }
+
                 s1x = s1x + s1xd;
                 s1y = s1y + s1yd;
 
@@ -320,37 +365,45 @@ public class FxSnaken extends Application {
                 }
 
                 matrix[s2x][s2y] = 2;
-                gc.fillRect(s2x * 2, s2y * 2, 2, 2);
+                gc.fillRect(s2x * 5, s2y * 5, 5, 5);
+                gc.setFill(Color.web("#699C1C"));
+                gc.fillRect(s2x * 5 + 2, s2y * 5 + 2, 1, 1);
+                if (s2yd == 0) {
+                    gc.fillRect(s2x * 5 + 1, s2y * 5 + 3, 3, 2);
+                } else {
+                    gc.fillRect(s2x * 5 + 3, s2y * 5 + 1, 2, 3);
+                }
                 s2x = s2x + s2xd;
                 s2y = s2y + s2yd;
 
-                if (s1x > 1024 / 2) {
+                if (s1x > 1024 / 5) {
                     s1x = 0;
                 }
                 if (s1x < 0) {
-                    s1x = 1024 / 2;
+                    s1x = 1024 / 5;
                 }
-                if (s1y > 768 / 2) {
+                if (s1y > 768 / 5) {
                     s1y = 0;
                 }
                 if (s1y < 0) {
-                    s1y = 768 / 2;
+                    s1y = 768 / 5;
                 }
-                if (s2x > 1024 / 2) {
+                if (s2x > 1024 / 5) {
                     s2x = 0;
                 }
                 if (s2x < 0) {
-                    s2x = 1024 / 2;
+                    s2x = 1024 / 5;
                 }
-                if (s2y > 768 / 2) {
+                if (s2y > 768 / 5) {
                     s2y = 0;
                 }
                 if (s2y < 0) {
-                    s2y = 768 / 2;
+                    s2y = 768 / 5;
                 }
 
             }
         });
+
         timeLine.getKeyFrames().add(keyFrame);
         timeLine.setCycleCount(Timeline.INDEFINITE);
         timeLine.play();
@@ -358,56 +411,114 @@ public class FxSnaken extends Application {
             @Override
             public void handle(KeyEvent key) {
                 if (key.getCode() == KeyCode.DOWN) {
-                    if (s1yd != -1) {
-                        s1yd = 1;
+                    if (s1yd >= 0) {
+                        s1yd = s1speed;
                         s1xd = 0;
                     }
                 }
                 if (key.getCode() == KeyCode.RIGHT) {
-                    if (s1xd != -1) {
+                    if (s1xd >= -0) {
                         s1yd = 0;
-                        s1xd = 1;
+                        s1xd = s1speed;
                     }
                 }
                 if (key.getCode() == KeyCode.LEFT) {
-                    if (s1xd != 1) {
+                    if (s1xd <= 0) {
                         s1yd = 0;
-                        s1xd = -1;
+                        s1xd = -1 * s1speed;
                     }
                 }
 
                 if (key.getCode() == KeyCode.UP) {
-                    if (s1yd != 1) {
-                        s1yd = -1;
+                    if (s1yd <= 0) {
+                        s1yd = -1 * s1speed;
                         s1xd = 0;
                     }
                 }
 
                 if (key.getCode() == KeyCode.S) {
-                    if (s2yd != -1) {
-                        s2yd = 1;
+                    if (s2yd >= 0) {
+                        s2yd = s2speed;
                         s2xd = 0;
                     }
                 }
 
                 if (key.getCode() == KeyCode.D) {
-                    if (s2xd != -1) {
+                    if (s2xd >= 0) {
                         s2yd = 0;
-                        s2xd = 1;
+                        s2xd = s2speed;
                     }
                 }
 
                 if (key.getCode() == KeyCode.A) {
-                    if (s2xd != 1) {
+                    if (s2xd <= 0) {
                         s2yd = 0;
-                        s2xd = -1;
+                        s2xd = -1 * s2speed;
                     }
                 }
 
                 if (key.getCode() == KeyCode.W) {
-                    if (s2yd != 1) {
-                        s2yd = -1;
+                    if (s2yd <= 0) {
+                        s2yd = -1 * s2speed;
                         s2xd = 0;
+                    }
+                }
+
+                if (key.getCode() == KeyCode.E) {
+                    s2speed = 2;
+                    if (s2x == 1) {
+                        s2x = 2;
+                    }
+                    if (s2x == -1) {
+                        s2x = -2;
+                    }
+                    if (s2y == 1) {
+                        s2y = 2;
+                    }
+                    if (s2y == -1) {
+                        s2y = -2;
+                    }
+                }
+
+                if (key.getCode() == KeyCode.Q) {
+                    s2speed = 1;
+                    if (s2x == 2) {
+                        s2x = 1;
+                    }
+                    if (s2x == -2) {
+                        s2x = -1;
+                    }
+                    if (s2y == 2) {
+                        s2y = 1;
+                    }
+                    if (s2y == -2) {
+                        s2y = -1;
+                    }
+                }
+                if (key.getCode() == KeyCode.P) {
+                    s1speed = 2;
+                    if (s1xd == 1 || s1xd == -1) {
+                        s1xd = s1xd * s1speed;
+                    }
+                    if (s1yd == 1 || s1yd == -1) {
+                        s1yd = s1yd * s1speed;
+                    }
+                }
+
+                if (key.getCode() == KeyCode.O) {
+                    s1speed = 1;
+
+                    if (s1x == 2) {
+                        s1x = 1;
+                    }
+                    if (s1x == -2) {
+                        s1x = -1;
+                    }
+                    if (s1y == 2) {
+                        s1y = 1;
+                    }
+                    if (s1y == -2) {
+                        s1y = -1;
                     }
                 }
             }
@@ -420,7 +531,22 @@ public class FxSnaken extends Application {
         gc.setFill(Color.GREEN);
         gc.setStroke(Color.GREEN);
         gc.setLineWidth(2);
-        gc.fillRect(-10000, -10000, 20000, 20000);
+        Image image = new Image(this.getClass().getResourceAsStream("/MountainsBG.png"));
+        gc.drawImage(image, 0, 0);
+//        for (int a = 5; a < 201; a++) {
+//            matrix[a][40] = 3;
+//            matrix[a][80] = 3;
+//            matrix[a][120] = 3;
+//        }
+//        for (int x = 0; x < 206; x++) {
+//            for (int y = 0; y < 155; y++) {
+//                if (matrix[x][y] == 3) {
+//                    gc.setFill(Color.web("#FFFFFF"));
+//                    gc.fillRect(x * 5, y * 5, 5, 5);
+//                }
+//            }
+//        }
+
     }
 
     private void resetVariables() {
@@ -431,11 +557,11 @@ public class FxSnaken extends Application {
         s2yd = 0;
 
         s1x = 2;
-        s1y = 763 / 2;
+        s1y = 763 / 5;
 
         s1xd = 1;
         s1yd = 0;
-        matrix = new int[513][385];
+        matrix = new int[206][155];
     }
 
     private void showScore() {
