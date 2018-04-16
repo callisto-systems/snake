@@ -466,33 +466,33 @@ public class FxSnaken extends Application {
 
                 if (key.getCode() == KeyCode.E) {
                     s2speed = 2;
-                    if (s2x == 1) {
-                        s2x = 2;
+                    if (s2xd == 1) {
+                        s2xd = 2;
                     }
-                    if (s2x == -1) {
-                        s2x = -2;
+                    if (s2xd == -1) {
+                        s2xd = -2;
                     }
-                    if (s2y == 1) {
-                        s2y = 2;
+                    if (s2yd == 1) {
+                        s2yd = 2;
                     }
-                    if (s2y == -1) {
-                        s2y = -2;
+                    if (s2yd == -1) {
+                        s2yd = -2;
                     }
                 }
 
                 if (key.getCode() == KeyCode.Q) {
                     s2speed = 1;
-                    if (s2x == 2) {
-                        s2x = 1;
+                    if (s2xd == 2) {
+                        s2xd = 1;
                     }
-                    if (s2x == -2) {
-                        s2x = -1;
+                    if (s2xd == -2) {
+                        s2xd = -1;
                     }
-                    if (s2y == 2) {
-                        s2y = 1;
+                    if (s2yd == 2) {
+                        s2yd = 1;
                     }
-                    if (s2y == -2) {
-                        s2y = -1;
+                    if (s2yd == -2) {
+                        s2yd = -1;
                     }
                 }
                 if (key.getCode() == KeyCode.P) {
@@ -508,17 +508,17 @@ public class FxSnaken extends Application {
                 if (key.getCode() == KeyCode.O) {
                     s1speed = 1;
 
-                    if (s1x == 2) {
-                        s1x = 1;
+                    if (s1xd == 2) {
+                        s1xd = 1;
                     }
-                    if (s1x == -2) {
-                        s1x = -1;
+                    if (s1xd == -2) {
+                        s1xd = -1;
                     }
-                    if (s1y == 2) {
-                        s1y = 1;
+                    if (s1yd == 2) {
+                        s1yd = 1;
                     }
-                    if (s1y == -2) {
-                        s1y = -1;
+                    if (s1yd == -2) {
+                        s1yd = -1;
                     }
                 }
             }
