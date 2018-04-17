@@ -340,6 +340,30 @@ public class FxSnaken extends Application {
                     buttonSave.requestFocus();
                 }
                 matrix[s1x][s1y] = 1;
+                if (s1xd == 2) {
+                    if (s1x <206) {
+                        matrix[s1x + 1][s1y] = 1;
+                        gc.fillRect((s1x+1) * 5, s1y * 5, 5, 5);
+                    }
+                }
+                if (s1xd == -2) {
+                    if (s1x > 0) {
+                        matrix[s1x - 1][s1y] = 1;
+                        gc.fillRect((s1x-1) * 5, s1y * 5, 5, 5);
+                    }
+                }
+                if (s1yd == 2) {
+                    if (s1y <155) {
+                        matrix[s1x][s1y + 1] = 1;
+                        gc.fillRect(s1x * 5, (s1y+1) * 5, 5, 5);
+                    }
+                }
+                if (s1yd == -2) {
+                    if (s1y >0) {
+                        matrix[s1x][s1y -1] = 1;
+                        gc.fillRect(s1x * 5, (s1y-1) * 5, 5, 5);
+                    }
+                }
                 gc.fillRect(s1x * 5, s1y * 5, 5, 5);
                 gc.setFill(Color.web("#FF4747"));
                 gc.fillRect(s1x * 5 + 2, s1y * 5 + 2, 1, 1);
@@ -365,6 +389,30 @@ public class FxSnaken extends Application {
                 }
 
                 matrix[s2x][s2y] = 2;
+                if (s2xd == 2) {
+                    if (s2x <206) {
+                        matrix[s2x + 1][s2y] = 2;
+                        gc.fillRect((s2x+1) * 5, s2y * 5, 5, 5);
+                    }
+                }
+                if (s2xd == -2) {
+                    if (s2x > 0) {
+                        matrix[s2x - 1][s2y] = 2;
+                        gc.fillRect((s2x-1) * 5, s2y * 5, 5, 5);
+                    }
+                }
+                if (s2yd == 2) {
+                    if (s2y <155) {
+                        matrix[s2x][s2y + 1] = 2;
+                        gc.fillRect(s2x * 5, (s2y+1) * 5, 5, 5);
+                    }
+                }
+                if (s2yd == -2) {
+                    if (s2y >0) {
+                        matrix[s2x][s2y -1] = 2;
+                        gc.fillRect(s2x * 5, (s2y-1) * 5, 5, 5);
+                    }
+                }
                 gc.fillRect(s2x * 5, s2y * 5, 5, 5);
                 gc.setFill(Color.web("#699C1C"));
                 gc.fillRect(s2x * 5 + 2, s2y * 5 + 2, 1, 1);
