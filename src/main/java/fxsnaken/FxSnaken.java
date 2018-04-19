@@ -549,60 +549,46 @@ public class FxSnaken extends Application {
 
                 if (key.getCode() == KeyCode.E) {
                     if (s2speed == 2) {
-                        s1speed = 1;
-                    }
-                    if (s2speed == 1) {
-                        s1speed = 2;
+                        s2speed = 1;
+                    } else if (s2speed == 1) {
+                        s2speed = 2;
                     }
                     if (s2xd == 1) {
                         s2xd = 2;
-                    }
-                    if (s2xd == -1) {
+                    } else if (s2xd == -1) {
                         s2xd = -2;
-                    }
-                    if (s2yd == 1) {
+                    } else if (s2yd == 1) {
                         s2yd = 2;
-                    }
-                    if (s2yd == -1) {
+                    } else if (s2yd == -1) {
                         s2yd = -2;
-                    }
-                    if (s2xd == 2) {
+                    } else if (s2xd == 2) {
                         s2xd = 1;
-                    }
-                    if (s2xd == -2) {
+                    } else if (s2xd == -2) {
                         s2xd = -1;
-                    }
-                    if (s2yd == 2) {
+                    } else if (s2yd == 2) {
                         s2yd = 1;
-                    }
-                    if (s2yd == -2) {
+                    } else if (s2yd == -2) {
                         s2yd = -1;
                     }
                 }
 
-                if (key.getCode() == KeyCode.P) {
+                if (key.getCode() == KeyCode.NUMPAD0 || key.getCode() == KeyCode.INSERT) {
                     if (s1speed == 2) {
                         s1speed = 1;
-                    }
-                    if (s1speed == 1) {
+                    } else if (s1speed == 1) {
                         s1speed = 2;
                     }
                     if (s1xd == 1 || s1xd == -1) {
                         s1xd = s1xd * s1speed;
-                    }
-                    if (s1yd == 1 || s1yd == -1) {
+                    } else if (s1yd == 1 || s1yd == -1) {
                         s1yd = s1yd * s1speed;
-                    }
-                    if (s1xd == 2) {
+                    } else if (s1xd == 2) {
                         s1xd = 1;
-                    }
-                    if (s1xd == -2) {
+                    } else if (s1xd == -2) {
                         s1xd = -1;
-                    }
-                    if (s1yd == 2) {
+                    } else if (s1yd == 2) {
                         s1yd = 1;
-                    }
-                    if (s1yd == -2) {
+                    } else if (s1yd == -2) {
                         s1yd = -1;
                     }
                 }
@@ -620,16 +606,30 @@ public class FxSnaken extends Application {
         gc.setLineWidth(2);
         Image image = new Image(this.getClass().getResourceAsStream("/MountainsBG.png"));
         gc.drawImage(image, 0, 0);
-        for (int a = 5; a < 201; a++) {
+        for (int a = 5; a < 92; a++) {
             matrix[a][40] = 3;
+            matrix[a][41] = 3;
             matrix[a][80] = 3;
+            matrix[a][81] = 3;
             matrix[a][120] = 3;
+            matrix[a][121] = 3;
         }
+        for (int a = 105; a < 201; a++) {
+            matrix[a][40] = 3;
+            matrix[a][41] = 3;
+            matrix[a][80] = 3;
+            matrix[a][81] = 3;
+            matrix[a][120] = 3;
+            matrix[a][121] = 3;
+        }
+
+        Image wallimage = new Image(this.getClass().getResourceAsStream("/wall.png"));
         for (int x = 0; x < 206; x++) {
             for (int y = 0; y < 155; y++) {
                 if (matrix[x][y] == 3) {
-                    gc.setFill(Color.web("#FFFFFF"));
-                    gc.fillRect(x * 5, y * 5, 5, 5);
+//                    gc.setFill(Color.web("#FFFFFF"));
+//                    gc.fillRect(x * 5, y * 5, 5, 5);
+                    gc.drawImage(wallimage, x * 5, y * 5);
                 }
             }
         }
