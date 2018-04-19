@@ -331,37 +331,44 @@ public class FxSnaken extends Application {
                 gc.setStroke(Color.RED);
 
                 if (matrix[s1x][s1y] != 0) {
-                    lostText.setFill(Color.RED);
-                    lostText.setText("red lost");
-                    py++;
-                    showScore();
-                    timeLine.pause();
-                    lostmenu.setVisible(true);
-                    buttonSave.requestFocus();
+                    redLost();
                 }
                 matrix[s1x][s1y] = 1;
+
                 if (s1xd == 2) {
-                    if (s1x <206) {
+                    if (s1x < 206) {
+                        if (matrix[s1x + 1][s1y] != 0) {
+                            redLost();
+                        }
                         matrix[s1x + 1][s1y] = 1;
-                        gc.fillRect((s1x+1) * 5, s1y * 5, 5, 5);
+                        gc.fillRect((s1x + 1) * 5, s1y * 5, 5, 5);
                     }
                 }
                 if (s1xd == -2) {
                     if (s1x > 0) {
+                        if (matrix[s1x - 1][s1y] != 0) {
+                            redLost();
+                        }
                         matrix[s1x - 1][s1y] = 1;
-                        gc.fillRect((s1x-1) * 5, s1y * 5, 5, 5);
+                        gc.fillRect((s1x - 1) * 5, s1y * 5, 5, 5);
                     }
                 }
                 if (s1yd == 2) {
-                    if (s1y <155) {
+                    if (s1y < 155) {
+                        if (matrix[s1x][s1y + 1] != 0) {
+                            redLost();
+                        }
                         matrix[s1x][s1y + 1] = 1;
-                        gc.fillRect(s1x * 5, (s1y+1) * 5, 5, 5);
+                        gc.fillRect(s1x * 5, (s1y + 1) * 5, 5, 5);
                     }
                 }
                 if (s1yd == -2) {
-                    if (s1y >0) {
-                        matrix[s1x][s1y -1] = 1;
-                        gc.fillRect(s1x * 5, (s1y-1) * 5, 5, 5);
+                    if (s1y > 0) {
+                        if (matrix[s1x][s1y - 1] != 0) {
+                            redLost();
+                        }
+                        matrix[s1x][s1y - 1] = 1;
+                        gc.fillRect(s1x * 5, (s1y - 1) * 5, 5, 5);
                     }
                 }
                 gc.fillRect(s1x * 5, s1y * 5, 5, 5);
@@ -379,38 +386,44 @@ public class FxSnaken extends Application {
                 gc.setFill(Color.YELLOW);
                 gc.setStroke(Color.YELLOW);
                 if (matrix[s2x][s2y] != 0) {
-                    lostText.setFill(Color.YELLOW);
-                    lostText.setText("yellow lost");
-                    pr++;
-                    showScore();
-                    timeLine.pause();
-                    lostmenu.setVisible(true);
-                    buttonSave.requestFocus();
+                    yellowLost();
                 }
 
                 matrix[s2x][s2y] = 2;
                 if (s2xd == 2) {
-                    if (s2x <206) {
+                    if (s2x < 206) {
+                        if (matrix[s2x + 1][s2y] != 0) {
+                            yellowLost();
+                        }
                         matrix[s2x + 1][s2y] = 2;
-                        gc.fillRect((s2x+1) * 5, s2y * 5, 5, 5);
+                        gc.fillRect((s2x + 1) * 5, s2y * 5, 5, 5);
                     }
                 }
                 if (s2xd == -2) {
                     if (s2x > 0) {
+                        if (matrix[s2x - 1][s2y] != 0) {
+                            yellowLost();
+                        }
                         matrix[s2x - 1][s2y] = 2;
-                        gc.fillRect((s2x-1) * 5, s2y * 5, 5, 5);
+                        gc.fillRect((s2x - 1) * 5, s2y * 5, 5, 5);
                     }
                 }
                 if (s2yd == 2) {
-                    if (s2y <155) {
+                    if (s2y < 155) {
+                        if (matrix[s2x][s2y + 1] != 0) {
+                            yellowLost();
+                        }
                         matrix[s2x][s2y + 1] = 2;
-                        gc.fillRect(s2x * 5, (s2y+1) * 5, 5, 5);
+                        gc.fillRect(s2x * 5, (s2y + 1) * 5, 5, 5);
                     }
                 }
                 if (s2yd == -2) {
-                    if (s2y >0) {
-                        matrix[s2x][s2y -1] = 2;
-                        gc.fillRect(s2x * 5, (s2y-1) * 5, 5, 5);
+                    if (s2y > 0) {
+                        if (matrix[s2x][s2y - 1] != 0) {
+                            yellowLost();
+                        }
+                        matrix[s2x][s2y - 1] = 2;
+                        gc.fillRect(s2x * 5, (s2y - 1) * 5, 5, 5);
                     }
                 }
                 gc.fillRect(s2x * 5, s2y * 5, 5, 5);
@@ -450,6 +463,26 @@ public class FxSnaken extends Application {
                 }
 
             }
+
+            private void redLost() {
+                lostText.setFill(Color.RED);
+                lostText.setText("red lost");
+                py++;
+                showScore();
+                timeLine.pause();
+                lostmenu.setVisible(true);
+                buttonSave.requestFocus();
+            }
+
+            private void yellowLost() {
+                lostText.setFill(Color.YELLOW);
+                lostText.setText("yellow lost");
+                pr++;
+                showScore();
+                timeLine.pause();
+                lostmenu.setVisible(true);
+                buttonSave.requestFocus();
+            }
         });
 
         timeLine.getKeyFrames().add(keyFrame);
@@ -481,6 +514,8 @@ public class FxSnaken extends Application {
                     if (s1yd <= 0) {
                         s1yd = -1 * s1speed;
                         s1xd = 0;
+                        System.out.println("sp " + s1speed);
+                        System.out.println("d " + s1yd);
                     }
                 }
 
@@ -513,7 +548,12 @@ public class FxSnaken extends Application {
                 }
 
                 if (key.getCode() == KeyCode.E) {
-                    s2speed = 2;
+                    if (s2speed == 2) {
+                        s1speed = 1;
+                    }
+                    if (s2speed == 1) {
+                        s1speed = 2;
+                    }
                     if (s2xd == 1) {
                         s2xd = 2;
                     }
@@ -526,10 +566,6 @@ public class FxSnaken extends Application {
                     if (s2yd == -1) {
                         s2yd = -2;
                     }
-                }
-
-                if (key.getCode() == KeyCode.Q) {
-                    s2speed = 1;
                     if (s2xd == 2) {
                         s2xd = 1;
                     }
@@ -543,19 +579,20 @@ public class FxSnaken extends Application {
                         s2yd = -1;
                     }
                 }
+
                 if (key.getCode() == KeyCode.P) {
-                    s1speed = 2;
+                    if (s1speed == 2) {
+                        s1speed = 1;
+                    }
+                    if (s1speed == 1) {
+                        s1speed = 2;
+                    }
                     if (s1xd == 1 || s1xd == -1) {
                         s1xd = s1xd * s1speed;
                     }
                     if (s1yd == 1 || s1yd == -1) {
                         s1yd = s1yd * s1speed;
                     }
-                }
-
-                if (key.getCode() == KeyCode.O) {
-                    s1speed = 1;
-
                     if (s1xd == 2) {
                         s1xd = 1;
                     }
@@ -569,7 +606,9 @@ public class FxSnaken extends Application {
                         s1yd = -1;
                     }
                 }
+
             }
+
         }
         );
 
@@ -581,19 +620,19 @@ public class FxSnaken extends Application {
         gc.setLineWidth(2);
         Image image = new Image(this.getClass().getResourceAsStream("/MountainsBG.png"));
         gc.drawImage(image, 0, 0);
-//        for (int a = 5; a < 201; a++) {
-//            matrix[a][40] = 3;
-//            matrix[a][80] = 3;
-//            matrix[a][120] = 3;
-//        }
-//        for (int x = 0; x < 206; x++) {
-//            for (int y = 0; y < 155; y++) {
-//                if (matrix[x][y] == 3) {
-//                    gc.setFill(Color.web("#FFFFFF"));
-//                    gc.fillRect(x * 5, y * 5, 5, 5);
-//                }
-//            }
-//        }
+        for (int a = 5; a < 201; a++) {
+            matrix[a][40] = 3;
+            matrix[a][80] = 3;
+            matrix[a][120] = 3;
+        }
+        for (int x = 0; x < 206; x++) {
+            for (int y = 0; y < 155; y++) {
+                if (matrix[x][y] == 3) {
+                    gc.setFill(Color.web("#FFFFFF"));
+                    gc.fillRect(x * 5, y * 5, 5, 5);
+                }
+            }
+        }
 
     }
 
@@ -609,6 +648,8 @@ public class FxSnaken extends Application {
 
         s1xd = 1;
         s1yd = 0;
+        s1speed = 1;
+        s2speed = 1;
         matrix = new int[206][155];
     }
 
