@@ -303,23 +303,41 @@ public class FxSnaken extends Application {
         lostmenu.setAlignment(Pos.CENTER);
         lostmenu.setVisible(false);
 
-        Text lostText = new Text("you lost");
+        Text lostText = new Text("");
         lostText.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
         lostText.setFill(Color.YELLOW);
         lostmenu.getChildren().add(lostText);
 
         Button buttonSave = new Button("next round");
+        Button buttonGQuit = new Button("quit");
+        
         buttonSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                 resetVariables();
                 clearScreen();
                 center.getChildren().remove(buttonSave);
+                center.getChildren().remove(buttonGQuit);
                 timeLine.play();
                 lostmenu.setVisible(false);
             }
         });
         lostmenu.getChildren().add(buttonSave);
+
+        
+             
+        buttonGQuit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent a) {
+                resetVariables();
+                clearScreen();
+                lostmenu = new VBox();
+                
+                mainMenu(scene);
+                
+            }
+        });
+        lostmenu.getChildren().add(buttonGQuit);
 
         resetVariables();
         clearScreen();
@@ -465,6 +483,8 @@ public class FxSnaken extends Application {
             }
 
             private void redLost() {
+                lostText.setStroke(Color.WHITE);
+                lostText.setStrokeWidth(1);
                 lostText.setFill(Color.RED);
                 lostText.setText("red lost");
                 py++;
@@ -475,6 +495,8 @@ public class FxSnaken extends Application {
             }
 
             private void yellowLost() {
+                lostText.setStroke(Color.BLACK);
+                lostText.setStrokeWidth(1);
                 lostText.setFill(Color.YELLOW);
                 lostText.setText("yellow lost");
                 pr++;
