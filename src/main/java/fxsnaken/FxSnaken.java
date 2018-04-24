@@ -72,6 +72,7 @@ public class FxSnaken extends Application {
     int s1speed = 1;
     int s2speed = 1;
     FloatControl gainControl;
+    Timeline timeln;
 
     Timeline timeLine = new Timeline();
 
@@ -111,7 +112,7 @@ public class FxSnaken extends Application {
         addMenuItem(vBox, "OPTIONS", () -> options(scena), Color.DARKGRAY);
         addMenuItem(vBox, "QUIT", () -> stage.close(), Color.DARKGRAY);
 
-        Timeline timeln = new Timeline(
+        timeln = new Timeline(
                 new KeyFrame(Duration.seconds(0.1), new EventHandler<ActionEvent>() {
                     int pos = 0;
 
@@ -132,7 +133,7 @@ public class FxSnaken extends Application {
     public void gameMake(Scene scene) {
         VBox vBox = new VBox();
         HBox hBox = new HBox();
-
+         
         scene.setRoot(vBox);
         vBox.setAlignment(Pos.CENTER_LEFT);
         BackgroundFill fill = new BackgroundFill(Color.web("#000000"), CornerRadii.EMPTY, Insets.EMPTY);
@@ -188,7 +189,14 @@ public class FxSnaken extends Application {
                 System.out.println(maxRounds);
             }
         });
-
+        
+        Image image = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
+       ImageView imv = new ImageView(image);
+       HBox hBoxMap = new HBox();
+        hBoxMap.getChildren().add(imv);
+        hBoxMap.setMargin(imv, new Insets(0, 40, 0, 0));
+vBox.getChildren().add(hBoxMap);
+       
         vBox.setMargin(gameText, new Insets(0, 0, 0, 20));
         vBox.setMargin(durationSlider, new Insets(20, 0, 0, 20));
 
@@ -197,9 +205,9 @@ public class FxSnaken extends Application {
         hBox.getStylesheets().add(getClass().getResource("/slider.css").toExternalForm());
 
         vBox.getChildren().add(hBox);
-        vBox.setMargin(hBox, new Insets(400, 0, 0, 0));
+        vBox.setMargin(hBox, new Insets(400, 0, 0, 0));     
         addMenuItem(vBox, "START", () -> game(scene), Color.DARKGRAY);
-
+         
         HBox hBoxQ = new HBox();
         VBox vBoxQ = new VBox();
         vBoxQ.setAlignment(Pos.BOTTOM_RIGHT);
@@ -210,7 +218,7 @@ public class FxSnaken extends Application {
         hBoxQ.getChildren().add(vBoxQ);
         vBox.getChildren().add(hBoxQ);
         addMenuItem(vBoxQ, "BACK", () -> mainMenu(scene), Color.DARKGRAY);
-
+     
     }
 
     @Override
@@ -279,7 +287,7 @@ public class FxSnaken extends Application {
 
         bottom.getChildren().add(copyrightText);
         bottom.setAlignment(Pos.CENTER_RIGHT);
-        bottom.setMargin(copyrightText, new Insets(0, 20, 0, 0));
+        
 
         pointsShow = new Text();
         pointsShow.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
@@ -307,9 +315,16 @@ public class FxSnaken extends Application {
         lostText.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
         lostText.setFill(Color.YELLOW);
         lostmenu.getChildren().add(lostText);
-
+         
+        
+        HBox hBOx =new HBox();
+         hBOx.setAlignment(Pos.CENTER);
         Button buttonSave = new Button("next round");
         Button buttonGQuit = new Button("quit");
+        hBOx.getChildren().add(buttonGQuit);
+         hBOx.getChildren().add(buttonSave);
+        hBOx.setMargin(buttonGQuit, new Insets(0, 10, 0, 0)); 
+        hBOx.getStylesheets().add(getClass().getResource("/button.css").toExternalForm());
         
         buttonSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -322,22 +337,24 @@ public class FxSnaken extends Application {
                 lostmenu.setVisible(false);
             }
         });
-        lostmenu.getChildren().add(buttonSave);
-
+        lostmenu.getChildren().add(hBOx);
+        
         
              
         buttonGQuit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent a) {
                 resetVariables();
-                clearScreen();
+               timeLine.stop();
+               timeLine = new Timeline();
+               timeln.stop();
                 lostmenu = new VBox();
                 
                 mainMenu(scene);
                 
             }
         });
-        lostmenu.getChildren().add(buttonGQuit);
+     
 
         resetVariables();
         clearScreen();
