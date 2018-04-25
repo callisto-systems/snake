@@ -133,7 +133,7 @@ public class FxSnaken extends Application {
     public void gameMake(Scene scene) {
         VBox vBox = new VBox();
         HBox hBox = new HBox();
-         
+
         scene.setRoot(vBox);
         vBox.setAlignment(Pos.CENTER_LEFT);
         BackgroundFill fill = new BackgroundFill(Color.web("#000000"), CornerRadii.EMPTY, Insets.EMPTY);
@@ -189,14 +189,43 @@ public class FxSnaken extends Application {
                 System.out.println(maxRounds);
             }
         });
+
+        
+
+        HBox hBoxMap = new HBox();
+        hBoxMap.setAlignment(Pos.TOP_LEFT);
+        vBox.getChildren().add(hBoxMap);
         
         Image image = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
-       ImageView imv = new ImageView(image);
-       HBox hBoxMap = new HBox();
-        hBoxMap.getChildren().add(imv);
-        hBoxMap.setMargin(imv, new Insets(0, 40, 0, 0));
-vBox.getChildren().add(hBoxMap);
-       
+        ImageView imv = new ImageView(image);
+        StackPane i1 = new StackPane();
+        i1.getChildren().add(imv);
+        i1.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
+        hBoxMap.setMargin(i1, new Insets(20, 0, 0, 20));
+        hBoxMap.getChildren().add(i1);
+        
+
+        Image image2 = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
+        ImageView imv2 = new ImageView(image2);
+        StackPane i2 = new StackPane();
+        i2.getChildren().add(imv2);
+        i2.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
+        hBoxMap.setMargin(i2, new Insets(20, 0, 0, 20));
+        hBoxMap.getChildren().add(i2);
+        
+        Image image3 = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
+        ImageView imv3 = new ImageView(image3);
+        StackPane i3 = new StackPane();
+        i3.getChildren().add(imv3);
+        i3.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
+        hBoxMap.setMargin(i3, new Insets(20, 0, 0, 20));
+        hBoxMap.getChildren().add(i3);
+
+//        Image image3 = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
+//        ImageView imv3 = new ImageView(image);
+//        hBoxMap.getChildren().add(imv3);
+//        hBoxMap.setMargin(imv3, new Insets(20, 0, 0, 20));
+
         vBox.setMargin(gameText, new Insets(0, 0, 0, 20));
         vBox.setMargin(durationSlider, new Insets(20, 0, 0, 20));
 
@@ -205,9 +234,9 @@ vBox.getChildren().add(hBoxMap);
         hBox.getStylesheets().add(getClass().getResource("/slider.css").toExternalForm());
 
         vBox.getChildren().add(hBox);
-        vBox.setMargin(hBox, new Insets(400, 0, 0, 0));     
+        vBox.setMargin(hBox, new Insets(400, 0, 0, 0));
         addMenuItem(vBox, "START", () -> game(scene), Color.DARKGRAY);
-         
+
         HBox hBoxQ = new HBox();
         VBox vBoxQ = new VBox();
         vBoxQ.setAlignment(Pos.BOTTOM_RIGHT);
@@ -218,7 +247,7 @@ vBox.getChildren().add(hBoxMap);
         hBoxQ.getChildren().add(vBoxQ);
         vBox.getChildren().add(hBoxQ);
         addMenuItem(vBoxQ, "BACK", () -> mainMenu(scene), Color.DARKGRAY);
-     
+
     }
 
     @Override
@@ -287,7 +316,6 @@ vBox.getChildren().add(hBoxMap);
 
         bottom.getChildren().add(copyrightText);
         bottom.setAlignment(Pos.CENTER_RIGHT);
-        
 
         pointsShow = new Text();
         pointsShow.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
@@ -315,17 +343,16 @@ vBox.getChildren().add(hBoxMap);
         lostText.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
         lostText.setFill(Color.YELLOW);
         lostmenu.getChildren().add(lostText);
-         
-        
-        HBox hBOx =new HBox();
-         hBOx.setAlignment(Pos.CENTER);
+
+        HBox hBOx = new HBox();
+        hBOx.setAlignment(Pos.CENTER);
         Button buttonSave = new Button("next round");
         Button buttonGQuit = new Button("quit");
         hBOx.getChildren().add(buttonGQuit);
-         hBOx.getChildren().add(buttonSave);
-        hBOx.setMargin(buttonGQuit, new Insets(0, 10, 0, 0)); 
+        hBOx.getChildren().add(buttonSave);
+        hBOx.setMargin(buttonGQuit, new Insets(0, 10, 0, 0));
         hBOx.getStylesheets().add(getClass().getResource("/button.css").toExternalForm());
-        
+
         buttonSave.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -338,23 +365,20 @@ vBox.getChildren().add(hBoxMap);
             }
         });
         lostmenu.getChildren().add(hBOx);
-        
-        
-             
+
         buttonGQuit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent a) {
                 resetVariables();
-               timeLine.stop();
-               timeLine = new Timeline();
-               timeln.stop();
+                timeLine.stop();
+                timeLine = new Timeline();
+                timeln.stop();
                 lostmenu = new VBox();
-                
+
                 mainMenu(scene);
-                
+
             }
         });
-     
 
         resetVariables();
         clearScreen();
