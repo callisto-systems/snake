@@ -54,7 +54,7 @@ public class FxSnaken extends Application {
 
     Stage stage;
     int maxRounds = 10;
-
+    int map = 3;
     int s2x;
     int s2y;
 
@@ -190,12 +190,10 @@ public class FxSnaken extends Application {
             }
         });
 
-        
-
         HBox hBoxMap = new HBox();
         hBoxMap.setAlignment(Pos.TOP_LEFT);
         vBox.getChildren().add(hBoxMap);
-        
+
         Image image = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
         ImageView imv = new ImageView(image);
         StackPane i1 = new StackPane();
@@ -203,29 +201,30 @@ public class FxSnaken extends Application {
         i1.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
         hBoxMap.setMargin(i1, new Insets(20, 0, 0, 20));
         hBoxMap.getChildren().add(i1);
-        
+        i1.setOnMouseClicked(e -> map = 1);
 
-        Image image2 = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
+        Image image2 = new Image(getClass().getResourceAsStream("/level2-thumb.png"));
         ImageView imv2 = new ImageView(image2);
         StackPane i2 = new StackPane();
         i2.getChildren().add(imv2);
         i2.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
         hBoxMap.setMargin(i2, new Insets(20, 0, 0, 20));
         hBoxMap.getChildren().add(i2);
+        i2.setOnMouseClicked(e -> map = 2);
         
-        Image image3 = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
+        Image image3 = new Image(getClass().getResourceAsStream("/level3-thumb.png"));
         ImageView imv3 = new ImageView(image3);
         StackPane i3 = new StackPane();
         i3.getChildren().add(imv3);
         i3.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
         hBoxMap.setMargin(i3, new Insets(20, 0, 0, 20));
         hBoxMap.getChildren().add(i3);
-
+         i3.setOnMouseClicked(e -> map=3);
+         
 //        Image image3 = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
 //        ImageView imv3 = new ImageView(image);
 //        hBoxMap.getChildren().add(imv3);
 //        hBoxMap.setMargin(imv3, new Insets(20, 0, 0, 20));
-
         vBox.setMargin(gameText, new Insets(0, 0, 0, 20));
         vBox.setMargin(durationSlider, new Insets(20, 0, 0, 20));
 
@@ -664,47 +663,99 @@ public class FxSnaken extends Application {
     }
 
     private void clearScreen() {
-        gc.setFill(Color.GREEN);
-        gc.setStroke(Color.GREEN);
-        gc.setLineWidth(2);
         Image image = new Image(this.getClass().getResourceAsStream("/MountainsBG.png"));
         gc.drawImage(image, 0, 0);
-        for (int a = 5; a < 92; a++) {
-            matrix[a][40] = 3;
-            matrix[a][41] = 3;
-            matrix[a][80] = 3;
-            matrix[a][81] = 3;
-            matrix[a][120] = 3;
-            matrix[a][121] = 3;
+        if (map == 1) {
+            for (int a = 5; a < 92; a++) {
+                matrix[a][40] = 3;
+                matrix[a][41] = 3;
+                matrix[a][80] = 3;
+                matrix[a][81] = 3;
+                matrix[a][120] = 3;
+                matrix[a][121] = 3;
+            }
+            for (int a = 105; a < 201; a++) {
+                matrix[a][40] = 3;
+                matrix[a][41] = 3;
+                matrix[a][80] = 3;
+                matrix[a][81] = 3;
+                matrix[a][120] = 3;
+                matrix[a][121] = 3;
+            }
         }
-        for (int a = 105; a < 201; a++) {
-            matrix[a][40] = 3;
-            matrix[a][41] = 3;
-            matrix[a][80] = 3;
-            matrix[a][81] = 3;
-            matrix[a][120] = 3;
-            matrix[a][121] = 3;
-        }
+        if (map == 2) {
+            float y = 0;
+            for (int x = 0; x < 206; x++) {
+                if (x < 103 - 10 || x > 103 + 10) {
+                    matrix[x][Math.round(y)] = 3;
+                    if (Math.round(y) < 154) {
+                        matrix[x][Math.round(y) + 1] = 3;
+                    }
+                }
 
+                y = y + 155f / 206f;
+            }
+            y = 154 - 50 * 155f / 206f;
+            for (int x = 0; x < 206; x++) {
+
+                if (y < 0) {
+                    break;
+                }
+                if (x < 155 / 2 - 10 || x > 155 / 2 + 10) {
+                    matrix[x][Math.round(y)] = 3;
+                    if (Math.round(y) < 154) {
+                        matrix[x][Math.round(y) + 1] = 3;
+                    }
+                }
+
+                y = y - 155f / 206f;
+            }
+            y = 154;
+            for (int x = 50; x < 206; x++) {
+                if (y < 0) {
+                    break;
+                }
+                if (x < 78 + 50 - 10 || x > 78 + 50 + 10) {
+                    matrix[x][Math.round(y)] = 3;
+                    if (Math.round(y) < 154) {
+                        matrix[x][Math.round(y) + 1] = 3;
+                    }
+                }
+
+                y = y - 155f / 206f;
+            }
+
+        }
         Image wallimage = new Image(this.getClass().getResourceAsStream("/wall.png"));
         for (int x = 0; x < 206; x++) {
             for (int y = 0; y < 155; y++) {
                 if (matrix[x][y] == 3) {
-//                    gc.setFill(Color.web("#FFFFFF"));
-//                    gc.fillRect(x * 5, y * 5, 5, 5);
                     gc.drawImage(wallimage, x * 5, y * 5);
                 }
             }
-        }
 
+        }
     }
 
     private void resetVariables() {
-        s2x = 2;
-        s2y = 2;
-
-        s2xd = 1;
-        s2yd = 0;
+        if (map == 1) {
+            s2x = 2;
+            s2y = 2;
+            s2xd = 1;
+            s2yd = 0;
+        }
+        if (map == 2) {
+            s2x = 204;
+            s2y = 2;
+            s2xd = -1;
+            s2yd = 0;
+        }
+        if (map == 3) {
+            s2x = 2;
+            s2y = 2;
+            s2xd = 1;
+            s2yd = 0;
+        }
 
         s1x = 2;
         s1y = 763 / 5;
