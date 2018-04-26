@@ -1,5 +1,6 @@
 package fxsnaken;
 
+import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -54,7 +55,7 @@ public class FxSnaken extends Application {
 
     Stage stage;
     int maxRounds = 10;
-    int map = 3;
+    int map = 4;
     int s2x;
     int s2y;
 
@@ -140,96 +141,113 @@ public class FxSnaken extends Application {
         BackgroundImage im = new BackgroundImage(new Image(FxSnaken.class.getResourceAsStream("/gold-bg.png")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         vBox.setBackground(new Background(new BackgroundFill[]{fill}, new BackgroundImage[]{im}));
 
-        Text gameText = new Text("MATCH DURATION:");
-        gameText.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
-        gameText.setFont(Font.font("Times New Roman", FontWeight.SEMI_BOLD, 30));
-        gameText.setFill(Color.WHITE);
-
-        Slider durationSlider = new Slider(0, 2, 0);
-        durationSlider.setMin(0);
-        durationSlider.setMax(2);
-        durationSlider.setValue(1);
-        durationSlider.setMinorTickCount(0);
-        durationSlider.setMajorTickUnit(1);
-        durationSlider.setSnapToTicks(true);
-        durationSlider.setShowTickMarks(true);
-        durationSlider.setShowTickLabels(true);
-        durationSlider.setPrefWidth(200);
-
-        durationSlider.setLabelFormatter(new StringConverter<Double>() {
-            @Override
-            public String toString(Double n) {
-                if (n < 0.5) {
-                    return "10";
-                }
-                if (n < 1.5) {
-                    return "20";
-                }
-                return "30";
-            }
-
-            @Override
-            public Double fromString(String s) {
-                switch (s) {
-                    case "10":
-                        return 0d;
-                    case "20":
-                        return 1d;
-                    case "30":
-                        return 2d;
-                    default:
-                        return 0d;
-                }
-            }
-        });
-        durationSlider.valueProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                maxRounds = (int) durationSlider.getValue();
-                System.out.println(maxRounds);
-            }
-        });
-
+//        Text gameText = new Text("MATCH DURATION:");
+//        gameText.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
+//        gameText.setFont(Font.font("Times New Roman", FontWeight.SEMI_BOLD, 30));
+//        gameText.setFill(Color.WHITE);
+//
+//        Slider durationSlider = new Slider(0, 2, 0);
+//        durationSlider.setMin(0);
+//        durationSlider.setMax(2);
+//        durationSlider.setValue(1);
+//        durationSlider.setMinorTickCount(0);
+//        durationSlider.setMajorTickUnit(1);
+//        durationSlider.setSnapToTicks(true);
+//        durationSlider.setShowTickMarks(true);
+//        durationSlider.setShowTickLabels(true);
+//        durationSlider.setPrefWidth(200);
+//
+//        durationSlider.setLabelFormatter(new StringConverter<Double>() {
+//            @Override
+//            public String toString(Double n) {
+//                if (n < 0.5) {
+//                    return "10";
+//                }
+//                if (n < 1.5) {
+//                    return "20";
+//                }
+//                return "30";
+//            }
+//
+//            @Override
+//            public Double fromString(String s) {
+//                switch (s) {
+//                    case "10":
+//                        return 0d;
+//                    case "20":
+//                        return 1d;
+//                    case "30":
+//                        return 2d;
+//                    default:
+//                        return 0d;
+//                }
+//            }
+//        });
+//        durationSlider.valueProperty().addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+//                maxRounds = (int) durationSlider.getValue();
+//                System.out.println(maxRounds);
+//            }
+//        });
         HBox hBoxMap = new HBox();
         hBoxMap.setAlignment(Pos.TOP_LEFT);
         vBox.getChildren().add(hBoxMap);
 
+        StackPane i1 = new StackPane();
+        StackPane i2 = new StackPane();
+        StackPane i3 = new StackPane();
+
         Image image = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
         ImageView imv = new ImageView(image);
-        StackPane i1 = new StackPane();
         i1.getChildren().add(imv);
-        i1.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
+        i1.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
         hBoxMap.setMargin(i1, new Insets(20, 0, 0, 20));
         hBoxMap.getChildren().add(i1);
-        i1.setOnMouseClicked(e -> map = 1);
+        i1.setOnMouseClicked(e -> {
+            map = 1;
+            i1.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
+            i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i3.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+        });
 
         Image image2 = new Image(getClass().getResourceAsStream("/level2-thumb.png"));
         ImageView imv2 = new ImageView(image2);
-        StackPane i2 = new StackPane();
+
         i2.getChildren().add(imv2);
-        i2.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
+        i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
         hBoxMap.setMargin(i2, new Insets(20, 0, 0, 20));
         hBoxMap.getChildren().add(i2);
-        i2.setOnMouseClicked(e -> map = 2);
-        
+        i2.setOnMouseClicked(e -> {
+            map = 2;
+            i2.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
+            i1.setStyle("-fx-border-color:transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i3.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+        });
+
         Image image3 = new Image(getClass().getResourceAsStream("/level3-thumb.png"));
         ImageView imv3 = new ImageView(image3);
-        StackPane i3 = new StackPane();
+
         i3.getChildren().add(imv3);
         i3.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
         hBoxMap.setMargin(i3, new Insets(20, 0, 0, 20));
         hBoxMap.getChildren().add(i3);
-         i3.setOnMouseClicked(e -> map=3);
-         
+        i3.setOnMouseClicked(e -> {
+            map = 3;
+            i3.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
+            i1.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+        });
+
 //        Image image3 = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
 //        ImageView imv3 = new ImageView(image);
 //        hBoxMap.getChildren().add(imv3);
 //        hBoxMap.setMargin(imv3, new Insets(20, 0, 0, 20));
-        vBox.setMargin(gameText, new Insets(0, 0, 0, 20));
-        vBox.setMargin(durationSlider, new Insets(20, 0, 0, 20));
-
-        hBox.getChildren().add(gameText);
-        hBox.getChildren().add(durationSlider);
+//        vBox.setMargin(gameText, new Insets(0, 0, 0, 20));
+//        vBox.setMargin(durationSlider, new Insets(20, 0, 0, 20));
+//
+//        hBox.getChildren().add(gameText);
+//        hBox.getChildren().add(durationSlider);
         hBox.getStylesheets().add(getClass().getResource("/slider.css").toExternalForm());
 
         vBox.getChildren().add(hBox);
@@ -269,7 +287,7 @@ public class FxSnaken extends Application {
 
             gainControl = (FloatControl) clip
                     .getControl(FloatControl.Type.MASTER_GAIN);
-            double gain = 0.5D; // number between 0 and 1 (loudest)
+            double gain = 0.5D;
             float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
             gainControl.setValue(dB);
             clip.start();
@@ -549,7 +567,7 @@ public class FxSnaken extends Application {
 
         timeLine.getKeyFrames().add(keyFrame);
         timeLine.setCycleCount(Timeline.INDEFINITE);
-        timeLine.play();
+        //timeLine.play();
         scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent key) {
@@ -683,6 +701,7 @@ public class FxSnaken extends Application {
                 matrix[a][121] = 3;
             }
         }
+
         if (map == 2) {
             float y = 0;
             for (int x = 0; x < 206; x++) {
@@ -724,8 +743,19 @@ public class FxSnaken extends Application {
 
                 y = y - 155f / 206f;
             }
+        }
+        if (map == 4) {
+            Random random = new Random();
+            for (int a = 0; a < 150; a++) {
+                int ry = random.nextInt(154);
+                if (ry == 151 || ry == 2) {
+                    continue;
+                }
+                matrix[random.nextInt(206)][ry] = 3;
+            }
 
         }
+
         Image wallimage = new Image(this.getClass().getResourceAsStream("/wall.png"));
         for (int x = 0; x < 206; x++) {
             for (int y = 0; y < 155; y++) {
@@ -757,8 +787,15 @@ public class FxSnaken extends Application {
             s2yd = 0;
         }
 
+        if (map == 4) {
+            s2x = 2;
+            s2y = 2;
+            s2xd = 1;
+            s2yd = 0;
+        }
+
         s1x = 2;
-        s1y = 763 / 5;
+        s1y = 151;
 
         s1xd = 1;
         s1yd = 0;
