@@ -8,6 +8,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
@@ -55,7 +56,7 @@ public class FxSnaken extends Application {
 
     Stage stage;
     int maxRounds = 10;
-    int map = 4;
+    int map = 3;
     int s2x;
     int s2y;
 
@@ -80,6 +81,7 @@ public class FxSnaken extends Application {
     Text pointsShow;
     GraphicsContext gc;
     VBox lostmenu = new VBox();
+    EventHandler keysEvents;
 
     public static void main(String[] args) {
         launch(args);
@@ -194,10 +196,17 @@ public class FxSnaken extends Application {
         hBoxMap.setAlignment(Pos.TOP_LEFT);
         vBox.getChildren().add(hBoxMap);
 
+        
+        HBox hBoxMap2 = new HBox();
+        hBoxMap2.setAlignment(Pos.CENTER_LEFT);
+        vBox.getChildren().add(hBoxMap2);
+
+
         StackPane i1 = new StackPane();
         StackPane i2 = new StackPane();
         StackPane i3 = new StackPane();
-
+        StackPane i4 = new StackPane();
+        
         Image image = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
         ImageView imv = new ImageView(image);
         i1.getChildren().add(imv);
@@ -209,11 +218,12 @@ public class FxSnaken extends Application {
             i1.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
             i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i3.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i4.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
         });
 
         Image image2 = new Image(getClass().getResourceAsStream("/level2-thumb.png"));
         ImageView imv2 = new ImageView(image2);
-
+        
         i2.getChildren().add(imv2);
         i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
         hBoxMap.setMargin(i2, new Insets(20, 0, 0, 20));
@@ -223,10 +233,12 @@ public class FxSnaken extends Application {
             i2.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
             i1.setStyle("-fx-border-color:transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i3.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i4.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
         });
 
         Image image3 = new Image(getClass().getResourceAsStream("/level3-thumb.png"));
         ImageView imv3 = new ImageView(image3);
+        map =3;
 
         i3.getChildren().add(imv3);
         i3.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
@@ -235,6 +247,22 @@ public class FxSnaken extends Application {
         i3.setOnMouseClicked(e -> {
             map = 3;
             i3.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
+            i1.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i4.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+        });
+        
+        Image image4 = new Image(getClass().getResourceAsStream("/level4-thumb.png"));
+        ImageView imv4 = new ImageView(image4);
+
+        i4.getChildren().add(imv4);
+        i4.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+        hBoxMap2.setMargin(i4, new Insets(20, 0, 0, 20));
+        hBoxMap2.getChildren().add(i4);
+        i4.setOnMouseClicked(e -> {
+            map = 4;
+            i4.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
+            i3.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i1.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
         });
@@ -251,18 +279,19 @@ public class FxSnaken extends Application {
         hBox.getStylesheets().add(getClass().getResource("/slider.css").toExternalForm());
 
         vBox.getChildren().add(hBox);
-        vBox.setMargin(hBox, new Insets(400, 0, 0, 0));
+        vBox.setMargin(hBox, new Insets(200, 0, 0, 0));
         addMenuItem(vBox, "START", () -> game(scene), Color.DARKGRAY);
 
         HBox hBoxQ = new HBox();
         VBox vBoxQ = new VBox();
-        vBoxQ.setAlignment(Pos.BOTTOM_RIGHT);
         hBoxQ.setAlignment(Pos.BOTTOM_RIGHT);
-
+        vBox.setMargin(hBoxQ, new Insets(20, 10, 0, 0));
+        
         hBoxQ.prefHeightProperty().bind(vBox.widthProperty());
 
         hBoxQ.getChildren().add(vBoxQ);
         vBox.getChildren().add(hBoxQ);
+       
         addMenuItem(vBoxQ, "BACK", () -> mainMenu(scene), Color.DARKGRAY);
 
     }
@@ -391,6 +420,7 @@ public class FxSnaken extends Application {
                 timeLine = new Timeline();
                 timeln.stop();
                 lostmenu = new VBox();
+                scene.removeEventFilter(KeyEvent.KEY_PRESSED, keysEvents);
 
                 mainMenu(scene);
 
@@ -567,8 +597,8 @@ public class FxSnaken extends Application {
 
         timeLine.getKeyFrames().add(keyFrame);
         timeLine.setCycleCount(Timeline.INDEFINITE);
-        //timeLine.play();
-        scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+        timeLine.play();
+        keysEvents = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent key) {
                 if (key.getCode() == KeyCode.DOWN) {
@@ -594,8 +624,6 @@ public class FxSnaken extends Application {
                     if (s1yd <= 0) {
                         s1yd = -1 * s1speed;
                         s1xd = 0;
-                        System.out.println("sp " + s1speed);
-                        System.out.println("d " + s1yd);
                     }
                 }
 
@@ -675,8 +703,8 @@ public class FxSnaken extends Application {
 
             }
 
-        }
-        );
+        };
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, keysEvents);
 
     }
 
