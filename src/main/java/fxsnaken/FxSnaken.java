@@ -196,17 +196,15 @@ public class FxSnaken extends Application {
         hBoxMap.setAlignment(Pos.TOP_LEFT);
         vBox.getChildren().add(hBoxMap);
 
-        
         HBox hBoxMap2 = new HBox();
         hBoxMap2.setAlignment(Pos.CENTER_LEFT);
         vBox.getChildren().add(hBoxMap2);
-
 
         StackPane i1 = new StackPane();
         StackPane i2 = new StackPane();
         StackPane i3 = new StackPane();
         StackPane i4 = new StackPane();
-        
+
         Image image = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
         ImageView imv = new ImageView(image);
         i1.getChildren().add(imv);
@@ -223,7 +221,7 @@ public class FxSnaken extends Application {
 
         Image image2 = new Image(getClass().getResourceAsStream("/level2-thumb.png"));
         ImageView imv2 = new ImageView(image2);
-        
+
         i2.getChildren().add(imv2);
         i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
         hBoxMap.setMargin(i2, new Insets(20, 0, 0, 20));
@@ -238,7 +236,7 @@ public class FxSnaken extends Application {
 
         Image image3 = new Image(getClass().getResourceAsStream("/level3-thumb.png"));
         ImageView imv3 = new ImageView(image3);
-        map =3;
+        map = 3;
 
         i3.getChildren().add(imv3);
         i3.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
@@ -251,7 +249,7 @@ public class FxSnaken extends Application {
             i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i4.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
         });
-        
+
         Image image4 = new Image(getClass().getResourceAsStream("/level4-thumb.png"));
         ImageView imv4 = new ImageView(image4);
 
@@ -286,12 +284,12 @@ public class FxSnaken extends Application {
         VBox vBoxQ = new VBox();
         hBoxQ.setAlignment(Pos.BOTTOM_RIGHT);
         vBox.setMargin(hBoxQ, new Insets(20, 10, 0, 0));
-        
+
         hBoxQ.prefHeightProperty().bind(vBox.widthProperty());
 
         hBoxQ.getChildren().add(vBoxQ);
         vBox.getChildren().add(hBoxQ);
-       
+
         addMenuItem(vBoxQ, "BACK", () -> mainMenu(scene), Color.DARKGRAY);
 
     }
@@ -380,6 +378,46 @@ public class FxSnaken extends Application {
         Canvas canvas = new Canvas(1024, 768);
         center.getChildren().add(canvas);
         gc = canvas.getGraphicsContext2D();
+
+        HBox rsgHbox = new HBox();
+        rsgHbox.setAlignment(Pos.CENTER);
+
+        center.getChildren().add(rsgHbox);
+
+        Timeline rsgTimeline = new Timeline();
+        KeyFrame rsgKF = new KeyFrame(Duration.seconds(0.80), new EventHandler<ActionEvent>() {
+            int nr = 1;
+
+            public void handle(ActionEvent event) {
+                if (nr == 1) {
+                    Image redyimage = new Image(getClass().getResourceAsStream("/ready.png"));
+                    ImageView redyimageview = new ImageView(redyimage);
+                    rsgHbox.getChildren().add(redyimageview);
+                }
+                if (nr == 2) {
+                    Image setimage = new Image(getClass().getResourceAsStream("/set.png"));
+                    ImageView setimageview = new ImageView(setimage);
+                    rsgHbox.getChildren().add(setimageview);
+                }
+                if (nr == 3) {
+                    Image goimage = new Image(getClass().getResourceAsStream("/go.png"));
+                    ImageView goimageview = new ImageView(goimage);
+                    rsgHbox.getChildren().add(goimageview);
+
+                }
+                if (nr == 4) {
+                    timeLine.play();
+                    rsgTimeline.stop();
+                    center.getChildren().remove(rsgHbox);
+
+                }
+                nr++;
+
+            }
+        });
+        rsgTimeline.getKeyFrames().add(rsgKF);
+        rsgTimeline.setCycleCount(4);
+        rsgTimeline.play();
 
         center.getChildren().add(lostmenu);
         lostmenu.setAlignment(Pos.CENTER);
@@ -597,7 +635,7 @@ public class FxSnaken extends Application {
 
         timeLine.getKeyFrames().add(keyFrame);
         timeLine.setCycleCount(Timeline.INDEFINITE);
-        timeLine.play();
+
         keysEvents = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent key) {
