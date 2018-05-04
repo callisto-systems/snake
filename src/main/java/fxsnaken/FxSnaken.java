@@ -143,55 +143,6 @@ public class FxSnaken extends Application {
         BackgroundImage im = new BackgroundImage(new Image(FxSnaken.class.getResourceAsStream("/gold-bg.png")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         vBox.setBackground(new Background(new BackgroundFill[]{fill}, new BackgroundImage[]{im}));
 
-//        Text gameText = new Text("MATCH DURATION:");
-//        gameText.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
-//        gameText.setFont(Font.font("Times New Roman", FontWeight.SEMI_BOLD, 30));
-//        gameText.setFill(Color.WHITE);
-//
-//        Slider durationSlider = new Slider(0, 2, 0);
-//        durationSlider.setMin(0);
-//        durationSlider.setMax(2);
-//        durationSlider.setValue(1);
-//        durationSlider.setMinorTickCount(0);
-//        durationSlider.setMajorTickUnit(1);
-//        durationSlider.setSnapToTicks(true);
-//        durationSlider.setShowTickMarks(true);
-//        durationSlider.setShowTickLabels(true);
-//        durationSlider.setPrefWidth(200);
-//
-//        durationSlider.setLabelFormatter(new StringConverter<Double>() {
-//            @Override
-//            public String toString(Double n) {
-//                if (n < 0.5) {
-//                    return "10";
-//                }
-//                if (n < 1.5) {
-//                    return "20";
-//                }
-//                return "30";
-//            }
-//
-//            @Override
-//            public Double fromString(String s) {
-//                switch (s) {
-//                    case "10":
-//                        return 0d;
-//                    case "20":
-//                        return 1d;
-//                    case "30":
-//                        return 2d;
-//                    default:
-//                        return 0d;
-//                }
-//            }
-//        });
-//        durationSlider.valueProperty().addListener(new ChangeListener() {
-//            @Override
-//            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-//                maxRounds = (int) durationSlider.getValue();
-//                System.out.println(maxRounds);
-//            }
-//        });
         HBox hBoxMap = new HBox();
         hBoxMap.setAlignment(Pos.TOP_LEFT);
         vBox.getChildren().add(hBoxMap);
@@ -374,18 +325,12 @@ public class FxSnaken extends Application {
         bottom.setAlignment(Pos.CENTER_RIGHT);
 
         pointsShow = new Text();
-        pointsShow.setFont(Font.font("Verdana", FontWeight.BOLD, 11));
+        pointsShow.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
         pointsShow.setFill(Color.WHITE);
         showScore();
         left.getChildren().add(pointsShow);
         left.setAlignment(Pos.TOP_CENTER);
         left.setMargin(pointsShow, new Insets(20, 0, 0, 0));
-
-        Image image = new Image(getClass().getResourceAsStream("/23408.png"));
-        Button buttonS = new Button("", new ImageView(image));
-        right.getChildren().add(buttonS);
-        right.setAlignment(Pos.TOP_RIGHT);
-        right.setMargin(buttonS, new Insets(5, 5, 0, 0));
 
         Canvas canvas = new Canvas(1024, 768);
         center.getChildren().add(canvas);
@@ -471,7 +416,8 @@ public class FxSnaken extends Application {
                 timeln.stop();
                 lostmenu = new VBox();
                 scene.removeEventFilter(KeyEvent.KEY_PRESSED, keysEvents);
-
+                py = 0;
+                pr = 0;
                 mainMenu(scene);
 
             }
@@ -905,7 +851,6 @@ public class FxSnaken extends Application {
 
     private void showScore() {
         pointsShow.setText("red " + pr + " -score- " + py + " yellow");
-
     }
 
     private void addMenuItem(VBox vBox, String text, Runnable runable, Color colorel) {
