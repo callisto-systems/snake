@@ -56,7 +56,7 @@ public class FxSnaken extends Application {
 
     Stage stage;
     int maxRounds = 10;
-    int map = 3;
+    int map = 5;
     int s2x;
     int s2y;
 
@@ -204,6 +204,7 @@ public class FxSnaken extends Application {
         StackPane i2 = new StackPane();
         StackPane i3 = new StackPane();
         StackPane i4 = new StackPane();
+        StackPane i5 = new StackPane();
 
         Image image = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
         ImageView imv = new ImageView(image);
@@ -217,6 +218,7 @@ public class FxSnaken extends Application {
             i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i3.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i4.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i5.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
         });
 
         Image image2 = new Image(getClass().getResourceAsStream("/level2-thumb.png"));
@@ -232,6 +234,7 @@ public class FxSnaken extends Application {
             i1.setStyle("-fx-border-color:transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i3.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i4.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i5.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
         });
 
         Image image3 = new Image(getClass().getResourceAsStream("/level3-thumb.png"));
@@ -248,6 +251,7 @@ public class FxSnaken extends Application {
             i1.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i4.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i5.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
         });
 
         Image image4 = new Image(getClass().getResourceAsStream("/level4-thumb.png"));
@@ -263,17 +267,25 @@ public class FxSnaken extends Application {
             i3.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i1.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
             i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i5.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
         });
 
-//        Image image3 = new Image(getClass().getResourceAsStream("/level1-thumb.png"));
-//        ImageView imv3 = new ImageView(image);
-//        hBoxMap.getChildren().add(imv3);
-//        hBoxMap.setMargin(imv3, new Insets(20, 0, 0, 20));
-//        vBox.setMargin(gameText, new Insets(0, 0, 0, 20));
-//        vBox.setMargin(durationSlider, new Insets(20, 0, 0, 20));
-//
-//        hBox.getChildren().add(gameText);
-//        hBox.getChildren().add(durationSlider);
+        Image image5 = new Image(getClass().getResourceAsStream("/level5-thumb.png"));
+        ImageView imv5 = new ImageView(image5);
+
+        i5.getChildren().add(imv5);
+        i5.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+        hBoxMap2.setMargin(i5, new Insets(20, 0, 0, 20));
+        hBoxMap2.getChildren().add(i5);
+        i5.setOnMouseClicked(e -> {
+            map = 5;
+            i5.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
+            i3.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i1.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+            i4.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
+        });
+
         hBox.getStylesheets().add(getClass().getResource("/slider.css").toExternalForm());
 
         vBox.getChildren().add(hBox);
@@ -821,6 +833,21 @@ public class FxSnaken extends Application {
             }
 
         }
+        if (map == 5) {
+            int radius = 155 / 2 - 2;
+            int xCenter = 206 / 2;
+            int yCenter = 155 / 2 - 1;
+
+            int r2 = radius * radius;
+            for (float x = -radius; x <= radius; x = x + 2f) {
+
+                int y = (int) (Math.sqrt(r2 - x * x) + 0.5);
+                matrix[(int) (xCenter + x)][(int) (yCenter + y)] = 3;
+                matrix[(int) (xCenter + x)][(yCenter - y)] = 3;
+
+            }
+
+        }
 
         Image wallimage = new Image(this.getClass().getResourceAsStream("/wall.png"));
         for (int x = 0; x < 206; x++) {
@@ -854,6 +881,12 @@ public class FxSnaken extends Application {
         }
 
         if (map == 4) {
+            s2x = 2;
+            s2y = 2;
+            s2xd = 1;
+            s2yd = 0;
+        }
+        if (map == 5) {
             s2x = 2;
             s2y = 2;
             s2xd = 1;
