@@ -381,7 +381,7 @@ public class FxSnaken extends Application {
 
                 }
                 if (nr == 4) {
-                    timeLine.play();
+                    //timeLine.play();
                     rsgTimeline.stop();
                     center.getChildren().remove(rsgHbox);
 
@@ -724,9 +724,10 @@ public class FxSnaken extends Application {
     }
 
     private void clearScreen() {
-        Image image = new Image(this.getClass().getResourceAsStream("/MountainsBG.png"));
-        gc.drawImage(image, 0, 0);
+        
         if (map == 1) {
+            Image image = new Image(this.getClass().getResourceAsStream("/mov.jpg"));
+        gc.drawImage(image, 0, 0);
             for (int a = 5; a < 92; a++) {
                 matrix[a][40] = 3;
                 matrix[a][41] = 3;
@@ -746,6 +747,8 @@ public class FxSnaken extends Application {
         }
 
         if (map == 2) {
+            Image image = new Image(this.getClass().getResourceAsStream("/forest.png"));
+        gc.drawImage(image, 0, 0);
             float y = 0;
             for (int x = 0; x < 206; x++) {
                 if (x < 103 - 10 || x > 103 + 10) {
@@ -787,7 +790,14 @@ public class FxSnaken extends Application {
                 y = y - 155f / 206f;
             }
         }
+        if(map == 3) {
+            Image image = new Image(this.getClass().getResourceAsStream("/egipt.png"));
+        gc.drawImage(image, 0, 0);
+        }
+        
         if (map == 4) {
+            Image image = new Image(this.getClass().getResourceAsStream("/MountainsBG.png"));
+        gc.drawImage(image, 0, 0);
             Random random = new Random();
             for (int a = 0; a < 150; a++) {
                 int ry = random.nextInt(154);
@@ -799,6 +809,8 @@ public class FxSnaken extends Application {
 
         }
         if (map == 5) {
+            Image image = new Image(this.getClass().getResourceAsStream("/zahar.jpg"));
+        gc.drawImage(image, 0, 0);
             int radius = 155 / 2 - 2;
             int xCenter = 206 / 2;
             int yCenter = 155 / 2 - 1;
