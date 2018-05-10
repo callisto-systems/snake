@@ -381,7 +381,7 @@ public class FxSnaken extends Application {
 
                 }
                 if (nr == 4) {
-                    //timeLine.play();
+                    timeLine.play();
                     rsgTimeline.stop();
                     center.getChildren().remove(rsgHbox);
 
@@ -826,6 +826,7 @@ public class FxSnaken extends Application {
 
         }
 
+        
         Image wallimage = new Image(this.getClass().getResourceAsStream("/wall.png"));
         for (int x = 0; x < 206; x++) {
             for (int y = 0; y < 155; y++) {
