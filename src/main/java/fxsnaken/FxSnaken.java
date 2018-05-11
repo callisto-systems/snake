@@ -1,5 +1,7 @@
 package fxsnaken;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.util.Random;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -8,7 +10,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
@@ -16,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,7 +44,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.util.StringConverter;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -266,10 +265,13 @@ public class FxSnaken extends Application {
         stage.setTitle("Snaken");
         stage.setScene(scena);
         stage.setMaximized(true);
+        stage.getIcons().add(new Image(FxSnaken.class.getResourceAsStream("/snake-icon.png")));
         stage.show();
 
         try {
-            AudioInputStream stream = AudioSystem.getAudioInputStream(FxSnaken.class.getResourceAsStream("/x.mp3"));
+            InputStream mp3Stream = FxSnaken.class.getResourceAsStream("/x.mp3");
+            InputStream bufferedIn = new BufferedInputStream(mp3Stream);
+            AudioInputStream stream = AudioSystem.getAudioInputStream(bufferedIn);
             AudioFormat format = stream.getFormat();
             DataLine.Info info = new DataLine.Info(Clip.class, format);
             Clip clip = (Clip) AudioSystem.getLine(info);
