@@ -295,7 +295,6 @@ public class FxSnaken extends Application {
         VBox left = new VBox();
         HBox bottom = new HBox();
         StackPane center = new StackPane();
-//        StackPane right = new StackPane();
         StackPane up = new StackPane();
         BorderPane borderPane = new BorderPane();
         scene.setRoot(borderPane);
@@ -307,17 +306,11 @@ public class FxSnaken extends Application {
         center.setPrefWidth(900);
         center.setPrefHeight(900);
         borderPane.setLeft(left);
-//        borderPane.setRight(right);
         borderPane.setCenter(center);
         borderPane.setBottom(bottom);
         borderPane.setTop(up);
 
         left.setStyle("-fx-background-color: #202020;");
-//        BackgroundFill fill = new BackgroundFill(Color.web("#000000"), CornerRadii.EMPTY, Insets.EMPTY);
-//        BackgroundImage im = new BackgroundImage(new Image(FxSnaken.class.getResourceAsStream("/gold-bg.png")), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-//        center.setBackground(new Background(new BackgroundFill[]{fill}, new BackgroundImage[]{im}));
-
-//        right.setBackground(new Background(new BackgroundFill[]{fill}, new BackgroundImage[]{im}));
 
         gametimeln = new Timeline(
                 new KeyFrame(Duration.seconds(0.1), new EventHandler<ActionEvent>() {
