@@ -171,6 +171,12 @@ public class FxSnaken extends Application {
 	i1.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
 	hBoxMap.setMargin(i1, new Insets(20, 0, 0, 20));
 	hBoxMap.getChildren().add(i1);
+	Text l1Text = new Text("Plum Waterfalls");
+	l1Text.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+	l1Text.setFill(Color.web("#68235F"));
+	l1Text.setStroke(Color.WHITE);
+	l1Text.setStrokeWidth(1.2);
+	i1.getChildren().add(l1Text);
 	i1.setOnMouseClicked(e -> {
 	    map = 1;
 	    i1.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
@@ -187,6 +193,12 @@ public class FxSnaken extends Application {
 	i2.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
 	hBoxMap.setMargin(i2, new Insets(20, 0, 0, 20));
 	hBoxMap.getChildren().add(i2);
+	Text l2Text = new Text("Dark Forest");
+	l2Text.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+	l2Text.setFill(Color.BLACK);
+	l2Text.setStroke(Color.WHITE);
+	l2Text.setStrokeWidth(1);
+	i2.getChildren().add(l2Text);
 	i2.setOnMouseClicked(e -> {
 	    map = 2;
 	    i2.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
@@ -204,6 +216,12 @@ public class FxSnaken extends Application {
 	i3.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
 	hBoxMap.setMargin(i3, new Insets(20, 0, 0, 20));
 	hBoxMap.getChildren().add(i3);
+	Text l3Text = new Text("Egyptian Sand");
+	l3Text.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+	l3Text.setFill(Color.YELLOW);
+	l3Text.setStroke(Color.BROWN);
+	l3Text.setStrokeWidth(1);
+	i3.getChildren().add(l3Text);
 	i3.setOnMouseClicked(e -> {
 	    map = 3;
 	    i3.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
@@ -220,6 +238,12 @@ public class FxSnaken extends Application {
 	i4.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
 	hBoxMap2.setMargin(i4, new Insets(20, 0, 0, 20));
 	hBoxMap2.getChildren().add(i4);
+	Text l4Text = new Text("Rocky Cliffs");
+	l4Text.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+	l4Text.setFill(Color.FORESTGREEN);
+	l4Text.setStroke(Color.LIGHTGREEN);
+	l4Text.setStrokeWidth(1);
+	i4.getChildren().add(l4Text);
 	i4.setOnMouseClicked(e -> {
 	    map = 4;
 	    i4.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
@@ -236,6 +260,12 @@ public class FxSnaken extends Application {
 	i5.setStyle("-fx-border-color: transparent; -fx-border-width: 4; -fx-padding: 0px;");
 	hBoxMap2.setMargin(i5, new Insets(20, 0, 0, 20));
 	hBoxMap2.getChildren().add(i5);
+	Text l5Text = new Text("Candy Land");
+	l5Text.setFont(Font.font("Verdana", FontWeight.BOLD, 28));
+	l5Text.setFill(Color.web("#FE96E3"));
+	l5Text.setStroke(Color.web("#5D395B"));
+	l5Text.setStrokeWidth(1.2);
+	i5.getChildren().add(l5Text);
 	i5.setOnMouseClicked(e -> {
 	    map = 5;
 	    i5.setStyle("-fx-border-color: red; -fx-border-width: 4; -fx-padding: 0px;");
@@ -349,7 +379,7 @@ public class FxSnaken extends Application {
 	redpointsShow.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 	redpointsShow.setFill(Color.RED);
 	redpointsShow.setText("red ");
-	
+
 	rpointsShow = new Text();
 	rpointsShow.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 	rpointsShow.setFill(Color.RED);
@@ -358,11 +388,11 @@ public class FxSnaken extends Application {
 	scorepointsShow.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 	scorepointsShow.setFill(Color.WHITE);
 	scorepointsShow.setText(" -score- ");
-	
+
 	ypointsShow = new Text();
 	ypointsShow.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 	ypointsShow.setFill(Color.YELLOW);
-	
+
 	Text yellpointsShow = new Text();
 	yellpointsShow.setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 	yellpointsShow.setFill(Color.YELLOW);
@@ -376,7 +406,7 @@ public class FxSnaken extends Application {
 	pointsBox.getChildren().add(ypointsShow);
 	pointsBox.getChildren().add(yellpointsShow);
 	pointsBox.setAlignment(Pos.CENTER);
-		
+
 	left.getChildren().add(pointsBox);
 	left.setMargin(pointsBox, new Insets(20, 0, 0, 0));
 
